@@ -1,0 +1,82 @@
+<svg xmlns="http://www.w3.org/2000/svg"
+     viewBox="0 0 120 180"
+     role="img"
+     aria-labelledby="title desc">
+<title id="title">Sous steam loader — continuous draw</title>
+<desc id="desc">The original Sous steam mark is revealed smoothly from the bottom, starting with the right stroke and flowing directly into the left.</desc>
+
+<defs>
+  <mask id="rightReveal" maskUnits="userSpaceOnUse">
+    <rect width="120" height="180" fill="black"/>
+    <path d="M68 158
+             C64 139 72 122 82 106
+             C92 90 93 72 82 51"
+          pathLength="1"
+          fill="none"
+          stroke="white"
+          stroke-width="34"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-dasharray="1"
+          stroke-dashoffset="1">
+      <animate attributeName="stroke-dashoffset"
+               values="1;1;0;0"
+               keyTimes="0;0.03;0.43;1"
+               dur="2.25s"
+               repeatCount="indefinite"
+               calcMode="spline"
+               keySplines=".25 .05 .18 1;.25 .05 .18 1;.25 .05 .18 1"/>
+    </path>
+  </mask>
+
+  <mask id="leftReveal" maskUnits="userSpaceOnUse">
+    <rect width="120" height="180" fill="black"/>
+    <path d="M35 127
+             C31 108 39 91 49 75
+             C59 59 60 41 49 20"
+          pathLength="1"
+          fill="none"
+          stroke="white"
+          stroke-width="34"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-dasharray="1"
+          stroke-dashoffset="1">
+      <!-- Starts BEFORE the right stroke is fully complete.
+           No dead gap between the two motions. -->
+      <animate attributeName="stroke-dashoffset"
+               values="1;1;0;0"
+               keyTimes="0;0.15;0.68;1"
+               dur="2.25s"
+               repeatCount="indefinite"
+               calcMode="spline"
+               keySplines=".22 .02 .15 1;.25 .05 .18 1;.25 .05 .18 1"/>
+    </path>
+  </mask>
+</defs>
+
+<g id="art">
+  <animate attributeName="opacity"
+           values="1;1;0;0"
+           keyTimes="0;0.84;0.95;1"
+           dur="2.25s"
+           repeatCount="indefinite"
+           calcMode="spline"
+           keySplines=".4 0 .2 1;.4 0 .2 1;.4 0 .2 1"/>
+  <!-- exact original right steam silhouette -->
+  <path fill="#171513" mask="url(#rightReveal)"
+        d="M82 47
+           C97 68 99 88 87 107
+           C76 124 64 137 70 161
+           C52 140 55 117 67 98
+           C80 79 90 64 82 47 Z"/>
+
+  <!-- exact original left steam silhouette -->
+  <path fill="#171513" mask="url(#leftReveal)"
+        d="M48 16
+           C64 37 66 57 54 76
+           C43 93 31 106 37 130
+           C19 109 22 86 34 67
+           C47 48 56 33 48 16 Z"/>
+</g>
+</svg>

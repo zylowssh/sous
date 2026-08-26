@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 180" role="img" aria-labelledby="title desc">
+<title id="title">Sous steam mark</title>
+<desc id="desc">Two-stroke steam symbol for Sous.</desc>
+<g fill="#171513">
+  <path d="M48 16
+           C64 37 66 57 54 76
+           C43 93 31 106 37 130
+           C19 109 22 86 34 67
+           C47 48 56 33 48 16 Z"/>
+  <path d="M82 47
+           C97 68 99 88 87 107
+           C76 124 64 137 70 161
+           C52 140 55 117 67 98
+           C80 79 90 64 82 47 Z"/>
+</g>
+</svg>

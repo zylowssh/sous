@@ -1,0 +1,109 @@
+@import './fonts.css';
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    /* Pas de scroll-snap : la lecture prime sur l'effet. */
+  }
+  body {
+    @apply bg-cream font-sans text-ink antialiased;
+    font-feature-settings: 'kern' 1, 'liga' 1;
+  }
+  ::selection {
+    @apply bg-sauge text-cream;
+  }
+  :focus-visible {
+    outline: 2px solid theme('colors.sauge');
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+  h1,
+  h2,
+  h3 {
+    @apply font-display;
+    font-optical-sizing: auto;
+    text-wrap: balance;
+  }
+  /* Un enfant de grille ne doit jamais imposer sa largeur minimale :
+     sans ça, une carte ou un tableau élargit la colonne et rogne tout le
+     texte de la page sur mobile. */
+  .grid > * {
+    min-width: 0;
+  }
+}
+
+@layer components {
+  /* Micro-label en petites capitales espacées — la respiration éditoriale de Sous. */
+  .label {
+    @apply text-[11px] font-semibold uppercase tracking-label text-ink/55;
+  }
+  .rule {
+    @apply border-t border-ink/12;
+  }
+  .card {
+    @apply rounded-xl border border-ink/12 bg-paper shadow-soft;
+  }
+  .btn-primary {
+    @apply inline-flex items-center gap-2 rounded-lg bg-ink px-5 py-3 text-sm font-semibold text-cream transition-colors hover:bg-sauge;
+  }
+  .btn-ghost {
+    @apply inline-flex items-center gap-2 rounded-lg border border-ink/20 px-5 py-3 text-sm font-semibold text-ink transition-colors hover:border-ink/45 hover:bg-ink/[0.04];
+  }
+
+  .mask-line {
+    display: inline-block;
+    overflow: hidden;
+    vertical-align: bottom;
+  }
+  .mask-line > span {
+    display: inline-block;
+    transform: translateY(110%);
+    transition: transform 0.9s cubic-bezier(0.22, 1, 0.36, 1);
+    transition-delay: var(--wd, 0ms);
+  }
+  .in-view .mask-line > span {
+    transform: translateY(0);
+  }
+}
+
+@layer utilities {
+  .reveal {
+    opacity: 0;
+    transform: translate(var(--tx, 0px), var(--ty, 22px));
+    transition: opacity 0.8s ease, transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+    transition-delay: var(--d, 0ms);
+    will-change: opacity, transform;
+  }
+  .reveal.in-view {
+    opacity: 1;
+    transform: translate(0, 0);
+  }
+
+  /* Emplacement photo : occupe la place avant le chargement, donc aucun décalage. */
+  .photo-slot {
+    background-color: theme('colors.chalk');
+    background-image: linear-gradient(135deg, rgba(23, 21, 15, 0.05), rgba(23, 21, 15, 0));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  .reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+  .mask-line > span {
+    transform: none;
+    transition: none;
+  }
+  * {
+    animation-duration: 0.01ms !important;
+  }
+}

@@ -1,16 +1,17 @@
 import { useEffect, useState } from 'react';
+import { Link, useLocation } from 'react-router-dom';
 import { ArrowRightIcon, SousMark } from './doodles';
-import { goToSection } from './fx';
 
 const links = [
-  { label: 'Produit', href: '#produit' },
-  { label: 'Exemples', href: '#exemples' },
-  { label: 'Tarifs', href: '#tarifs' },
+  { label: 'Produit', href: '/produit' },
+  { label: 'Exemples', href: '/exemples' },
+  { label: 'Tarifs', href: '/tarifs' },
 ];
 
-export default function Navbar({ onNavigate }) {
+export default function Navbar() {
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const location = useLocation();
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 10);
@@ -19,47 +20,42 @@ export default function Navbar({ onNavigate }) {
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
-  const handleNav = (e, href) => {
-    e.preventDefault();
-    setOpen(false);
-    const id = href.replace('#', '');
-    // Standalone pages use onNavigate for cross-page transitions
-    if (onNavigate && ['produit', 'exemples', 'tarifs', 'login', 'signup', 'commencer'].includes(id)) {
-      onNavigate(id);
-    } else {
-      goToSection(id);
-    }
-  };
+  const closeMenu = () => setOpen(false);
 
   return (
     <header className={`fixed inset-x-0 top-0 z-50 transition-all duration-300 ${scrolled || open ? 'bg-cream/95 backdrop-blur border-b border-ink/10' : 'bg-transparent'}`}>
       <nav className="mx-auto flex h-16 md:h-20 max-w-7xl items-center justify-between px-4 md:px-8">
-        <a
-          href="#top"
-          onClick={(e) => handleNav(e, '#top')}
+        <Link
+          to="/"
+          onClick={closeMenu}
           aria-label="Sous — retour en haut"
           className="flex items-center gap-2.5 font-display text-4xl font-bold tracking-tight text-ink transition-opacity hover:opacity-70"
         >
           <SousMark className="h-8 w-auto text-flame" />
           sous.
-        </a>
+        </Link>
 
         <ul className="hidden md:flex items-center gap-8 text-sm font-medium">
           {links.map((l) => (
             <li key={l.label}>
-              <a href={l.href} onClick={(e) => handleNav(e, l.href)} className="group relative">
+              <Link
+                to={l.href}
+                onClick={closeMenu}
+                aria-current={location.pathname === l.href ? 'page' : undefined}
+                className={`group relative ${location.pathname === l.href ? 'font-bold' : ''}`}
+              >
                 {l.label}
-                <span className="absolute -bottom-1 left-0 h-0.5 w-0 bg-flame transition-all duration-300 group-hover:w-full" />
-              </a>
+                <span className={`absolute -bottom-1 left-0 h-0.5 bg-flame transition-all duration-300 group-hover:w-full ${location.pathname === l.href ? 'w-full' : 'w-0'}`} />
+              </Link>
             </li>
           ))}
         </ul>
 
         <div className="flex items-center gap-3">
-          <a href="#signup" onClick={(e) => handleNav(e, '#signup')} className="group hidden sm:inline-flex items-center gap-2 rounded-sm bg-ink px-4 py-2.5 text-sm font-semibold text-cream transition-colors hover:bg-flame">
+          <Link to="/commencer" onClick={closeMenu} className="group hidden sm:inline-flex items-center gap-2 rounded-sm bg-ink px-4 py-2.5 text-sm font-semibold text-cream transition-colors hover:bg-flame">
             Commencer
             <ArrowRightIcon className="h-4 w-4 transition-transform group-hover:translate-x-1" />
-          </a>
+          </Link>
           <button
             aria-label={open ? 'Fermer le menu' : 'Ouvrir le menu'}
             aria-expanded={open}
@@ -79,12 +75,21 @@ export default function Navbar({ onNavigate }) {
       <div id="mobile-menu" className={`md:hidden overflow-hidden transition-all duration-300 ${open ? 'max-h-96' : 'max-h-0'}`}>
         <ul className="space-y-3 px-4 py-4 text-base font-medium">
           {links.map((l) => (
-            <li key={l.label}><a href={l.href} onClick={(e) => handleNav(e, l.href)} className="block py-1">{l.label}</a></li>
+            <li key={l.label}>
+              <Link
+                to={l.href}
+                onClick={closeMenu}
+                aria-current={location.pathname === l.href ? 'page' : undefined}
+                className={`block border-l-2 py-1 pl-3 ${location.pathname === l.href ? 'border-flame font-bold' : 'border-transparent'}`}
+              >
+                {l.label}
+              </Link>
+            </li>
           ))}
           <li>
-            <a href="#signup" onClick={(e) => handleNav(e, '#signup')} className="inline-flex items-center gap-2 rounded-sm bg-ink px-4 py-2 text-cream">
+            <Link to="/commencer" onClick={closeMenu} className="inline-flex items-center gap-2 rounded-sm bg-ink px-4 py-2 text-cream">
               Commencer <ArrowRightIcon className="h-4 w-4" />
-            </a>
+            </Link>
           </li>
         </ul>
       </div>

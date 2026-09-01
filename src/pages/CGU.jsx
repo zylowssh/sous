@@ -1,39 +1,40 @@
+import { Link } from 'react-router-dom';
 import { ArrowLeftIcon, AsteriskIcon, SousMark } from '../components/doodles';
 import Footer from '../components/Footer';
 import { Grain } from '../components/fx';
 import Navbar from '../components/Navbar';
 import Reveal from '../components/Reveal';
 
-export default function CGU({ onBack }) {
+export default function CGU() {
   return (
-    <div className="min-h-screen bg-cream">
+    <div className="min-h-screen overflow-x-clip bg-cream">
       <Grain />
       <Navbar />
-      <div className="px-4 pb-20 pt-24 md:px-8 lg:px-16">
+      <div className="px-4 pb-14 pt-28 md:px-8 lg:px-16">
         <div className="mx-auto max-w-3xl">
           <Reveal>
-            <button 
-              onClick={onBack}
+            <Link 
+              to="/"
               className="group mb-10 inline-flex items-center gap-2 rounded-sm border-2 border-ink/20 px-4 py-2.5 text-sm font-semibold text-ink/70 transition-all hover:border-ink hover:bg-ink hover:text-cream"
             >
               <ArrowLeftIcon className="h-4 w-4 transition-transform group-hover:-translate-x-1" />
               Retour à l'accueil
-            </button>
+            </Link>
 
-            <div className="mb-10 flex items-center gap-3">
-              <SousMark className="h-10 w-auto text-flame" />
+            <div className="mb-10 flex items-center gap-2">
+              <SousMark className="h-6 w-auto text-flame" />
               <span className="font-display text-2xl font-bold tracking-tight text-ink">sous.</span>
             </div>
 
-            <h1 className="font-display text-4xl font-bold uppercase tracking-tight text-ink md:text-6xl">
+            <h1 className="font-display text-4xl font-bold uppercase leading-[0.95] tracking-tight text-ink sm:text-5xl">
               Conditions Générales<br />d'Utilisation
             </h1>
             <p className="mt-4 text-sm text-ink/60">Dernière mise à jour : 25 août 2026</p>
           </Reveal>
 
-          <div className="mt-12 space-y-10 text-sm leading-relaxed text-ink/80">
+          <div className="mt-12 space-y-10 text-sm leading-relaxed text-ink/60">
             <Reveal delay={100}>
-              <h2 className="font-display text-xl font-bold uppercase tracking-wide text-ink md:text-2xl">
+              <h2 className="font-display text-xl font-bold uppercase tracking-tight text-ink md:text-2xl">
                 <span className="text-flame">01.</span> Objet
               </h2>
               <div className="mt-3 border-l-2 border-ink/15 pl-5">
@@ -46,7 +47,7 @@ export default function CGU({ onBack }) {
             </Reveal>
 
             <Reveal delay={150}>
-              <h2 className="font-display text-xl font-bold uppercase tracking-wide text-ink md:text-2xl">
+              <h2 className="font-display text-xl font-bold uppercase tracking-tight text-ink md:text-2xl">
                 <span className="text-flame">02.</span> Description du Service
               </h2>
               <div className="mt-3 border-l-2 border-ink/15 pl-5">
@@ -59,7 +60,7 @@ export default function CGU({ onBack }) {
             </Reveal>
 
             <Reveal delay={200}>
-              <h2 className="font-display text-xl font-bold uppercase tracking-wide text-ink md:text-2xl">
+              <h2 className="font-display text-xl font-bold uppercase tracking-tight text-ink md:text-2xl">
                 <span className="text-flame">03.</span> Inscription et Compte
               </h2>
               <div className="mt-3 border-l-2 border-ink/15 pl-5">
@@ -72,7 +73,7 @@ export default function CGU({ onBack }) {
             </Reveal>
 
             <Reveal delay={250}>
-              <h2 className="font-display text-xl font-bold uppercase tracking-wide text-ink md:text-2xl">
+              <h2 className="font-display text-xl font-bold uppercase tracking-tight text-ink md:text-2xl">
                 <span className="text-flame">04.</span> Tarification et Paiement
               </h2>
               <div className="mt-3 border-l-2 border-ink/15 pl-5">
@@ -85,7 +86,7 @@ export default function CGU({ onBack }) {
             </Reveal>
 
             <Reveal delay={300}>
-              <h2 className="font-display text-xl font-bold uppercase tracking-wide text-ink md:text-2xl">
+              <h2 className="font-display text-xl font-bold uppercase tracking-tight text-ink md:text-2xl">
                 <span className="text-flame">05.</span> Responsabilité et Conformité
               </h2>
               <div className="mt-3 border-l-2 border-ink/15 pl-5">
@@ -99,7 +100,7 @@ export default function CGU({ onBack }) {
             </Reveal>
 
             <Reveal delay={350}>
-              <h2 className="font-display text-xl font-bold uppercase tracking-wide text-ink md:text-2xl">
+              <h2 className="font-display text-xl font-bold uppercase tracking-tight text-ink md:text-2xl">
                 <span className="text-flame">06.</span> Propriété Intellectuelle
               </h2>
               <div className="mt-3 border-l-2 border-ink/15 pl-5">
@@ -112,7 +113,7 @@ export default function CGU({ onBack }) {
             </Reveal>
 
             <Reveal delay={400}>
-              <h2 className="font-display text-xl font-bold uppercase tracking-wide text-ink md:text-2xl">
+              <h2 className="font-display text-xl font-bold uppercase tracking-tight text-ink md:text-2xl">
                 <span className="text-flame">07.</span> Loi Applicable et Juridiction
               </h2>
               <div className="mt-3 border-l-2 border-ink/15 pl-5">

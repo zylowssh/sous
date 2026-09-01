@@ -1,3 +1,4 @@
+import { Link, useLocation } from 'react-router-dom';
 import { AsteriskIcon, SousMark } from './doodles';
 import { goToSection } from './fx';
 
@@ -5,11 +6,10 @@ const footerCols = [
   {
     title: 'PRODUIT',
     links: [
-      { label: 'Le produit', href: '#produit' },
-      { label: 'Comment ça marche', href: '#how' },
-      { label: 'Exemples', href: '#exemples' },
-      { label: 'Menu synchronisé', href: '#menu' },
-      { label: 'Tarifs', href: '#tarifs' },
+      { label: 'Le produit', href: '/produit' },
+      { label: 'Exemples', href: '/exemples' },
+      { label: 'Tarifs', href: '/tarifs' },
+      { label: 'Design system', href: '/system-design' },
     ],
   },
   {
@@ -19,26 +19,29 @@ const footerCols = [
     ],
   },
   { title: 'LÉGAL', links: [
-    { label: 'Mentions légales', href: '#mentions-legales' },
-    { label: 'Confidentialité', href: '#confidentialite' },
-    { label: 'CGU', href: '#cgu' },
+    { label: 'Mentions légales', href: '/mentions-legales' },
+    { label: 'Confidentialité', href: '/confidentialite' },
+    { label: 'CGU', href: '/cgu' },
   ] },
 ];
 
-// Home anchors scroll through goToSection (native anchors break on pinned
-// sticky sections); standalone pages and legal hashes use navigateTo with
-// the cream transition overlay.
 const HOME_SECTIONS = new Set(['top', 'product', 'how', 'examples', 'tell', 'menu', 'testimonial', 'pricing']);
-const STANDALONE_PAGES = new Set(['exemples', 'produit', 'tarifs', 'login', 'signup', 'commencer']);
 
-export default function Footer({ onNavigate }) {
+export default function Footer() {
+  const location = useLocation();
+  const isLanding = location.pathname === '/';
+
   const onLinkClick = (e, href) => {
-    if (!href.startsWith('#')) return;
-    e.preventDefault();
-    const id = href.slice(1);
-    if (HOME_SECTIONS.has(id)) goToSection(id);
-    else if (STANDALONE_PAGES.has(id) || onNavigate) onNavigate(id);  // cross-page → transition overlay
-    else window.location.hash = id;              // fallback (no prop)
+    // External links (mailto)
+    if (!href.startsWith('/') && !href.startsWith('#')) return;
+    
+    // Landing page section anchors
+    if (isLanding && href.startsWith('#')) {
+      e.preventDefault();
+      const id = href.slice(1);
+      if (HOME_SECTIONS.has(id)) goToSection(id);
+    }
+    // All other links use React Router's <Link> default behavior
   };
 
   return (
@@ -65,7 +68,11 @@ export default function Footer({ onNavigate }) {
               <ul className="mt-2 space-y-1.5 md:mt-3 md:space-y-2">
                 {c.links.map((l) => (
                   <li key={l.label}>
-                    <a href={l.href} onClick={(e) => onLinkClick(e, l.href)} className="text-xs text-ink/80 transition-colors hover:text-flame md:text-sm">{l.label}</a>
+                    {l.href.startsWith('mailto:') ? (
+                      <a href={l.href} className="text-xs text-ink/80 transition-colors hover:text-flame md:text-sm">{l.label}</a>
+                    ) : (
+                      <Link to={l.href} onClick={(e) => onLinkClick(e, l.href)} className="text-xs text-ink/80 transition-colors hover:text-flame md:text-sm">{l.label}</Link>
+                    )}
                   </li>
                 ))}
               </ul>

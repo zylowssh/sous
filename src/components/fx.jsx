@@ -261,14 +261,16 @@ export function useStackSnap() {
 
 export function BigMarquee({ text }) {
   return (
-    <div className="relative z-10 -rotate-2 border-y-2 border-ink bg-ink py-3 text-cream">
-      <div className="overflow-hidden">
-        <div className="flex w-max animate-marquee gap-12 hover:[animation-play-state:paused]">
-          {Array(12).fill(text).map((t, i) => (
-            <span key={i} className="flex items-center gap-12 whitespace-nowrap font-display text-3xl uppercase md:text-5xl">
-              {t}
-            </span>
-          ))}
+    <div className="relative z-10 bg-flame">
+      <div className="-rotate-2 border-y-2 border-ink bg-ink py-3 text-cream">
+        <div className="overflow-hidden">
+          <div className="flex w-max animate-marquee gap-12 hover:[animation-play-state:paused]">
+            {Array(12).fill(text).map((t, i) => (
+              <span key={i} className="flex items-center gap-12 whitespace-nowrap font-display text-3xl uppercase md:text-5xl">
+                {t}
+              </span>
+            ))}
+          </div>
         </div>
       </div>
     </div>

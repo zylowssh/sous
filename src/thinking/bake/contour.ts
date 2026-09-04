@@ -3,7 +3,7 @@
 // Why not trace the original SVG path with `getPointAtLength`? Because the
 // path and the silhouette are different shapes. A logo whose mark is built
 // from a thick stroke, or from two overlapping shapes, has a path that runs
-// through the middle of the ink rather than around it — sampling it puts
+// through the middle of the ink rather than around it , sampling it puts
 // dots inside the letterform instead of on its edge. Marching squares
 // traces what the eye actually sees: the boundary of the rendered coverage,
 // holes and all, no matter how the artwork was constructed.
@@ -83,7 +83,7 @@ function key(p: Pt): string {
 /**
  * Trace every closed boundary in the mask at the given coverage threshold.
  *
- * Returns one loop per contour — the outer silhouette plus every hole,
+ * Returns one loop per contour , the outer silhouette plus every hole,
  * which is what keeps the counter of an "a" or the gap in a ring visible
  * once the shape is rendered as dots.
  */
@@ -189,7 +189,7 @@ export function resampleLoop(loop: Pt[], n: number): Pt[] {
 
 /**
  * Sample every contour, splitting a fixed dot budget between them by
- * perimeter so that dot SPACING is uniform across the whole mark — a small
+ * perimeter so that dot SPACING is uniform across the whole mark , a small
  * hole gets few dots, the outer silhouette gets many, and neither looks
  * denser than the other.
  *

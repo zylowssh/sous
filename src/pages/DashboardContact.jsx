@@ -4,6 +4,7 @@ import { DashboardTopbar } from '../components/DashboardLayout';
 import { Card, Field, inputCls, Button } from '../components/dashboard-ui';
 import { MailIcon, PhoneIcon, MessageIcon, PinIcon, ChevronDownIcon, ArrowRightIcon } from '../components/doodles';
 import { BookIcon } from '../components/dashicons';
+import { sendContactMessage } from '../lib/clientApi';
 
 const faqs = [
   'Comment modifier mon menu ?',
@@ -15,6 +16,23 @@ const faqs = [
 
 export default function DashboardContact() {
   const [sent, setSent] = useState(false);
+  const [sending, setSending] = useState(false);
+  const [error, setError] = useState('');
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    setSending(true);
+    setError('');
+    const values = Object.fromEntries(new FormData(event.currentTarget));
+    try {
+      await sendContactMessage(values);
+      setSent(true);
+    } catch (requestError) {
+      setError(requestError.message || 'Le message n’a pas pu être envoyé.');
+    } finally {
+      setSending(false);
+    }
+  };
 
   return (
     <div className="pb-16">
@@ -49,12 +67,13 @@ export default function DashboardContact() {
                 <p className="mt-2 text-sm text-ink/55">Notre équipe vous répondra sous 24h.</p>
               </div>
             ) : (
-              <form className="space-y-4" onSubmit={(e) => { e.preventDefault(); setSent(true); }}>
-                <Field label="Sujet"><select className={inputCls}><option>Sélectionnez un sujet</option><option>Facturation</option><option>Support technique</option><option>Autre</option></select></Field>
-                <Field label="Nom complet"><input placeholder="Votre nom" className={inputCls} /></Field>
-                <Field label="Email"><input placeholder="votre@email.com" className={inputCls} /></Field>
-                <Field label="Message"><textarea rows={4} placeholder="Décrivez votre demande..." className={inputCls} /></Field>
-                <Button className="w-full justify-center" type="submit">Envoyer le message</Button>
+              <form className="space-y-4" onSubmit={handleSubmit}>
+                {error && <p role="alert" className="rounded-sm bg-red-50 px-3 py-2 text-sm text-red-700">{error}</p>}
+                <Field label="Sujet"><select name="subject" required defaultValue="" className={inputCls}><option value="" disabled>Sélectionnez un sujet</option><option>Facturation</option><option>Support technique</option><option>Autre</option></select></Field>
+                <Field label="Nom complet"><input name="name" required placeholder="Votre nom" className={inputCls} /></Field>
+                <Field label="Email"><input name="email" type="email" required placeholder="votre@email.com" className={inputCls} /></Field>
+                <Field label="Message"><textarea name="message" required rows={4} placeholder="Décrivez votre demande..." className={inputCls} /></Field>
+                <Button className="w-full justify-center" type="submit" disabled={sending}>{sending ? 'Envoi…' : 'Envoyer le message'}</Button>
               </form>
             )}
           </Card>
@@ -62,7 +81,7 @@ export default function DashboardContact() {
           <Card title="Questions fréquentes">
             <div className="divide-y divide-ink/10">
               {faqs.map((q) => (
-                <button key={q} className="flex w-full items-center justify-between gap-2 py-3 text-left text-sm font-semibold text-ink">
+                <button type="button" key={q} className="flex w-full items-center justify-between gap-2 py-3 text-left text-sm font-semibold text-ink">
                   {q} <ChevronDownIcon className="h-4 w-4 shrink-0 text-ink/40" />
                 </button>
               ))}

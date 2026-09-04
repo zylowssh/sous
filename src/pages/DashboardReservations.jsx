@@ -35,7 +35,7 @@ const hours = Array.from({ length: 12 }, (_, i) => 11 + i);
 function ResBlock({ r, onClick }) {
   const tone = r.status === 'selected' ? 'border-flame bg-flame/10' : r.status === 'confirmed' ? 'border-green-300 bg-green-50' : r.status === 'pending' ? 'border-red-300 bg-red-50' : 'border-ink/15 bg-cream';
   return (
-    <button
+    <button type="button"
       onClick={onClick}
       style={{ left: pct(toMin(r.start)), width: `calc(${pct(toMin(r.end))} - ${pct(toMin(r.start))})` }}
       className={`absolute top-1 bottom-1 rounded-sm border px-2 py-1 text-left text-[11px] ${tone}`}
@@ -48,7 +48,7 @@ function ResBlock({ r, onClick }) {
 
 export default function DashboardReservations() {
   const [view, setView] = useState('Jour');
-  const [selected, setSelected] = useState({ name: 'Claire Martin', phone: '06 12 34 56 78', size: 4, start: '19:30', end: '21:30', table: 'Table 3 — Salle principale', tag: 'Anniversaire', notes: 'Sans gluten. Préfère une table au calme si possible.' });
+  const [selected, setSelected] = useState({ name: 'Claire Martin', phone: '06 12 34 56 78', size: 4, start: '19:30', end: '21:30', table: 'Table 3 , Salle principale', tag: 'Anniversaire', notes: 'Sans gluten. Préfère une table au calme si possible.' });
 
   return (
     <div className="pb-16">
@@ -58,16 +58,16 @@ export default function DashboardReservations() {
         <div className="flex flex-wrap items-center gap-3">
           <Button variant="outline" className="text-xs">Aujourd'hui</Button>
           <div className="flex items-center gap-1">
-            <button className="rounded-sm border border-ink/15 p-2 text-ink/50 hover:border-ink"><ArrowLeftIcon className="h-4 w-4" /></button>
-            <button className="rounded-sm border border-ink/15 p-2 text-ink/50 hover:border-ink"><ArrowRightIcon className="h-4 w-4" /></button>
+            <button type="button" className="rounded-sm border border-ink/15 p-2 text-ink/50 hover:border-ink"><ArrowLeftIcon className="h-4 w-4" /></button>
+            <button type="button" className="rounded-sm border border-ink/15 p-2 text-ink/50 hover:border-ink"><ArrowRightIcon className="h-4 w-4" /></button>
           </div>
-          <button className="flex items-center gap-2 rounded-sm border border-ink/15 px-3 py-2 text-sm font-semibold text-ink"><CalendarIcon className="h-4 w-4" /> 3 mai 2024 <ChevronDownIcon className="h-4 w-4" /></button>
+          <button type="button" className="flex items-center gap-2 rounded-sm border border-ink/15 px-3 py-2 text-sm font-semibold text-ink"><CalendarIcon className="h-4 w-4" /> 3 mai 2024 <ChevronDownIcon className="h-4 w-4" /></button>
           <div className="flex gap-1 rounded-sm border border-ink/15 p-1">
             {['Jour', 'Semaine', 'Mois'].map((v) => (
-              <button key={v} onClick={() => setView(v)} className={`rounded-sm px-3 py-1.5 text-xs font-bold ${view === v ? 'bg-flame/10 text-flame' : 'text-ink/50'}`}>{v}</button>
+              <button type="button" key={v} onClick={() => setView(v)} className={`rounded-sm px-3 py-1.5 text-xs font-bold ${view === v ? 'bg-flame/10 text-flame' : 'text-ink/50'}`}>{v}</button>
             ))}
           </div>
-          <button className="flex items-center gap-2 rounded-sm border border-ink/15 px-3 py-2 text-sm font-semibold text-ink"><GearIcon className="h-4 w-4" /> Paramètres</button>
+          <button type="button" className="flex items-center gap-2 rounded-sm border border-ink/15 px-3 py-2 text-sm font-semibold text-ink"><GearIcon className="h-4 w-4" /> Paramètres</button>
           <Button className="ml-auto text-sm"><PlusIcon className="h-4 w-4" /> Nouvelle réservation</Button>
         </div>
 
@@ -92,7 +92,7 @@ export default function DashboardReservations() {
                       </div>
                       <div className="relative h-14 border-l border-ink/5">
                         {t.res.map((r, i) => (
-                          <ResBlock key={i} r={r} onClick={() => r.name && setSelected({ ...r, name: r.name, table: `${t.name} — ${t.zone}`, phone: '06 12 34 56 78', tag: 'Anniversaire', notes: 'Sans gluten. Préfère une table au calme si possible.' })} />
+                          <ResBlock key={i} r={r} onClick={() => r.name && setSelected({ ...r, name: r.name, table: `${t.name} , ${t.zone}`, phone: '06 12 34 56 78', tag: 'Anniversaire', notes: 'Sans gluten. Préfère une table au calme si possible.' })} />
                         ))}
                       </div>
                     </div>
@@ -105,14 +105,14 @@ export default function DashboardReservations() {
           <div className="rounded-lg border border-ink/10 bg-paper p-5">
             <div className="flex items-center justify-between">
               <p className="text-sm font-extrabold text-ink">Réservation</p>
-              <button className="text-ink/40"><XIcon className="h-4 w-4" /></button>
+              <button type="button" className="text-ink/40"><XIcon className="h-4 w-4" /></button>
             </div>
             <span className="mt-2 inline-block"><Badge tone="green">Confirmée</Badge></span>
             <p className="mt-3 font-display text-2xl text-ink">{selected.name}</p>
 
             <div className="mt-4 grid grid-cols-3 gap-2">
               {[[PhoneIcon, 'Appeler'], [MessageIcon, 'Message'], [MailIcon, 'Email']].map(([Icon, label]) => (
-                <button key={label} className="flex flex-col items-center gap-1.5 rounded-md border border-ink/10 py-3 text-xs font-semibold text-ink/70 hover:border-ink">
+                <button type="button" key={label} className="flex flex-col items-center gap-1.5 rounded-md border border-ink/10 py-3 text-xs font-semibold text-ink/70 hover:border-ink">
                   <Icon className="h-4 w-4" /> {label}
                 </button>
               ))}
@@ -123,7 +123,7 @@ export default function DashboardReservations() {
               <p className="flex items-center gap-2 text-ink/70">🕐 {selected.start} – {selected.end}</p>
               <p className="flex items-center gap-2 text-ink/70">👥 {selected.size} personnes</p>
               <p className="flex items-center gap-2 text-ink/70">📍 {selected.table}</p>
-              {selected.tag && <p className="flex items-center gap-2 text-ink/70">🎉 Occasion — <Badge tone="orange">{selected.tag}</Badge></p>}
+              {selected.tag && <p className="flex items-center gap-2 text-ink/70">🎉 Occasion , <Badge tone="orange">{selected.tag}</Badge></p>}
               {selected.notes && <p className="flex items-start gap-2 text-ink/70">📝 {selected.notes}</p>}
             </div>
 
@@ -136,7 +136,7 @@ export default function DashboardReservations() {
               <p>Réservation créée</p>
               <p className="text-ink/60">Aujourd'hui à 10:15</p>
               <p className="mt-2">Depuis le site</p>
-              <button className="mt-3 flex w-full items-center justify-center gap-1 rounded-sm border border-ink/15 py-2 text-xs font-bold text-ink">Voir sur le site <ArrowRightIcon className="h-3.5 w-3.5" /></button>
+              <button type="button" className="mt-3 flex w-full items-center justify-center gap-1 rounded-sm border border-ink/15 py-2 text-xs font-bold text-ink">Voir sur le site <ArrowRightIcon className="h-3.5 w-3.5" /></button>
             </div>
           </div>
         </div>
@@ -144,7 +144,7 @@ export default function DashboardReservations() {
         <div className="mt-5 rounded-lg border border-ink/10 bg-paper p-5">
           <div className="flex items-center justify-between">
             <p className="text-sm font-extrabold text-ink">Réservations du vendredi 3 mai</p>
-            <button className="flex items-center gap-1 text-xs font-bold text-flame">Voir toutes <ArrowRightIcon className="h-3 w-3" /></button>
+            <button type="button" className="flex items-center gap-1 text-xs font-bold text-flame">Voir toutes <ArrowRightIcon className="h-3 w-3" /></button>
           </div>
           <div className="mt-3 divide-y divide-ink/10">
             {dayList.map((r) => (

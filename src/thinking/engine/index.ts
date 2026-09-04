@@ -1,11 +1,11 @@
 // The `thinking-orbs/engine` entry point: pure geometry, zero React, zero
-// DOM. Import this to drive your own renderer — a Skia canvas in React
+// DOM. Import this to drive your own renderer , a Skia canvas in React
 // Native, an offscreen canvas in a worker, a server-side rasteriser.
 //
 // The contract is deliberately small: resolve a (state, size) pair to its
 // draw options once, then call the mode's frame function per instant. What
 // comes back is a finished, z-sorted list of circles (and, for `connecting`,
-// line segments) with every value final — draw them in order and you have
+// line segments) with every value final , draw them in order and you have
 // the same picture the React component paints.
 //
 //   import { resolvePreset } from 'thinking-orbs/engine';
@@ -22,7 +22,7 @@ export { resolvePreset, STATE_TO_MODE, type ModeKey, type Resolved } from '../pr
 export type { Dot, Line, OrbFrame, ModeFrame, ModeDraw, LogoBinding } from './types';
 
 // The logo half of the engine. Same contract, geometry supplied as a baked
-// point set instead of generated — so a port drives these exactly like the
+// point set instead of generated , so a port drives these exactly like the
 // orb modes, and never needs an SVG rasteriser of its own.
 export {
   frameLogoAssemble,

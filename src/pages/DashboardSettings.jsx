@@ -2,13 +2,14 @@ import { useState } from 'react';
 import { DashboardTopbar } from '../components/DashboardLayout';
 import { Card, Field, inputCls, Toggle, Button } from '../components/dashboard-ui';
 import { WrenchIcon, UserCircleIcon } from '../components/dashicons';
+import usePersistentState from '../hooks/usePersistentState';
 import { ChartIcon, MailIcon } from '../components/doodles';
 
 const TABS = ['Général', 'Établissement', 'Réservations', 'Notifications', 'Utilisateurs', 'Facturation', 'Sécurité'];
 
 export default function DashboardSettings() {
   const [tab, setTab] = useState('Général');
-  const [prefs, setPrefs] = useState({ maintenance: false, avis: true, marketing: true, analytics: false });
+  const [prefs, setPrefs] = usePersistentState('settings-preferences', { maintenance: false, avis: true, marketing: true, analytics: false });
 
   const setPref = (k) => (v) => setPrefs((p) => ({ ...p, [k]: v }));
 
@@ -19,7 +20,7 @@ export default function DashboardSettings() {
       <div className="px-6 sm:px-10">
         <div className="flex flex-wrap gap-6 border-b border-ink/10">
           {TABS.map((t) => (
-            <button key={t} onClick={() => setTab(t)} className={`relative pb-3 text-sm font-semibold ${tab === t ? 'text-flame' : 'text-ink/55'}`}>
+            <button type="button" key={t} onClick={() => setTab(t)} className={`relative pb-3 text-sm font-semibold ${tab === t ? 'text-flame' : 'text-ink/55'}`}>
               {t}
               {tab === t && <span className="absolute inset-x-0 -bottom-px h-0.5 bg-flame" />}
             </button>
@@ -106,7 +107,7 @@ export default function DashboardSettings() {
         {tab === 'Facturation' && (
           <Card title="Facturation" className="mt-6 max-w-2xl">
             <div className="flex items-center justify-between rounded-md border border-ink/10 p-4">
-              <div><p className="text-sm font-bold text-ink">Plan Pro</p><p className="text-xs text-ink/50">89€ / mois — prochain paiement le 1 juin 2024</p></div>
+              <div><p className="text-sm font-bold text-ink">Plan Pro</p><p className="text-xs text-ink/50">89€ / mois , prochain paiement le 1 juin 2024</p></div>
               <Button variant="outline">Changer d'offre</Button>
             </div>
           </Card>

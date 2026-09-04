@@ -1,6 +1,6 @@
 // Baking, made safe to call from render.
 //
-// A bake costs a rasterise, a contour trace and several Poisson passes —
+// A bake costs a rasterise, a contour trace and several Poisson passes ,
 // tens of milliseconds. Doing that on every render, or once per mounted
 // instance, would be the single worst thing this library could do to a host
 // app's frame budget, since the common case is a logo that never changes
@@ -75,8 +75,8 @@ export function useBakedLogo(
     pending: !prebaked
   }));
 
-  // Identity of the source object is not a useful dependency — callers
-  // write `logo={{ svg }}` inline — so the effect keys off the value hash,
+  // Identity of the source object is not a useful dependency , callers
+  // write `logo={{ svg }}` inline , so the effect keys off the value hash,
   // and holds the source in a ref for the one bake that actually runs.
   const sourceRef = useRef(logo);
   sourceRef.current = logo;

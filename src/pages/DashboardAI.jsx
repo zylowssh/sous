@@ -4,6 +4,7 @@ import { Button } from '../components/dashboard-ui';
 import { SparkleIcon, ArrowRightIcon, CheckIcon } from '../components/doodles';
 import { RedoIcon, ExternalLinkIcon } from '../components/dashicons';
 import { IMG } from '../data';
+import usePersistentState from '../hooks/usePersistentState';
 
 const initialMessages = [
   { from: 'user', text: 'Ajoute le brunch tous les dimanches de 11h à 15h sur une section dédiée.', time: '10:41' },
@@ -19,16 +20,16 @@ function PreviewCard({ updated }) {
     <div className="mt-3 overflow-hidden rounded-md border border-ink/10">
       <div className="relative">
         <span className="absolute left-2 top-2 rounded-sm bg-ink/70 px-1.5 py-0.5 text-[8px] font-bold uppercase tracking-widest text-cream">Aperçu</span>
-        <img src={IMG.brunch} alt="Brunch" loading="lazy" className="aspect-video w-full object-cover" />
+        <img src={IMG.brunch} alt="Brunch" loading="lazy" className="aspect-video w-full object-cover"  decoding="async" />
       </div>
       <div className="bg-paper p-3">
         <p className="text-[9px] font-extrabold uppercase tracking-widest text-flame">Nouveau</p>
         <p className="mt-1 font-display text-sm uppercase leading-tight text-ink">Le brunch<br />tous les dimanches<br />de 11h à 15h</p>
         {updated && (
-          <button className="mt-2 rounded-sm bg-flame px-3 py-1.5 text-[10px] font-bold text-cream">Réserver une table</button>
+          <button type="button" className="mt-2 rounded-sm bg-flame px-3 py-1.5 text-[10px] font-bold text-cream">Réserver une table</button>
         )}
       </div>
-      <button className="flex w-full items-center justify-center gap-1 border-t border-ink/10 py-2 text-xs font-bold text-flame">
+      <button type="button" className="flex w-full items-center justify-center gap-1 border-t border-ink/10 py-2 text-xs font-bold text-flame">
         Voir l'aperçu complet <ArrowRightIcon className="h-3 w-3" />
       </button>
     </div>
@@ -36,7 +37,7 @@ function PreviewCard({ updated }) {
 }
 
 export default function DashboardAI() {
-  const [messages, setMessages] = useState(initialMessages);
+  const [messages, setMessages] = usePersistentState('ai-messages', initialMessages);
   const [draft, setDraft] = useState('');
   const [tab, setTab] = useState('Aperçu du site');
 
@@ -54,7 +55,7 @@ export default function DashboardAI() {
       <DashboardTopbar
         title={<span className="flex items-center gap-2">Sous AI <SparkleIcon className="h-5 w-5 text-flame" /></span>}
         subtitle="Votre assistant restaurant."
-        actions={<button className="hidden items-center gap-2 rounded-sm border border-ink/15 bg-paper px-4 py-2.5 text-sm font-semibold text-ink sm:inline-flex"><RedoIcon className="h-4 w-4" /> Historique</button>}
+        actions={<button type="button" className="hidden items-center gap-2 rounded-sm border border-ink/15 bg-paper px-4 py-2.5 text-sm font-semibold text-ink sm:inline-flex"><RedoIcon className="h-4 w-4" /> Historique</button>}
       />
 
       <div className="flex flex-1 gap-5 overflow-hidden px-6 pb-6 sm:px-10">
@@ -78,13 +79,14 @@ export default function DashboardAI() {
             </div>
             <div className="mt-3 flex items-center gap-2 rounded-sm border border-ink/15 bg-cream px-3 py-2.5">
               <input
+                aria-label="Demande à Sous"
                 value={draft}
                 onChange={(e) => setDraft(e.target.value)}
                 onKeyDown={(e) => e.key === 'Enter' && send()}
                 placeholder="Écrivez votre demande..."
                 className="flex-1 bg-transparent text-sm text-ink placeholder:text-ink/35 focus:outline-none"
               />
-              <button onClick={send} className="flex h-7 w-7 shrink-0 items-center justify-center rounded-sm bg-flame text-cream"><ArrowRightIcon className="h-4 w-4" /></button>
+              <button type="button" onClick={send} className="flex h-7 w-7 shrink-0 items-center justify-center rounded-sm bg-flame text-cream"><ArrowRightIcon className="h-4 w-4" /></button>
             </div>
             <p className="mt-2 text-[10px] text-ink/35">Sous peut faire des erreurs. Vérifiez toujours les informations importantes.</p>
           </div>
@@ -95,14 +97,14 @@ export default function DashboardAI() {
           <div className="flex items-center justify-between border-b border-ink/10 px-5 py-3">
             <div className="flex gap-5">
               {TABS.map((t) => (
-                <button key={t} onClick={() => setTab(t)} className={`relative pb-1 text-sm font-semibold ${tab === t ? 'text-flame' : 'text-ink/50'}`}>
+                <button type="button" key={t} onClick={() => setTab(t)} className={`relative pb-1 text-sm font-semibold ${tab === t ? 'text-flame' : 'text-ink/50'}`}>
                   {t}
                   {tab === t && <span className="absolute inset-x-0 -bottom-3.5 h-0.5 bg-flame" />}
                 </button>
               ))}
             </div>
             <div className="flex items-center gap-2">
-              <button className="flex items-center gap-1.5 rounded-sm border border-ink/15 px-3 py-2 text-xs font-bold text-ink"><ExternalLinkIcon className="h-3.5 w-3.5" /> Ouvrir le site</button>
+              <button type="button" className="flex items-center gap-1.5 rounded-sm border border-ink/15 px-3 py-2 text-xs font-bold text-ink"><ExternalLinkIcon className="h-3.5 w-3.5" /> Ouvrir le site</button>
               <Button className="text-xs">Publier les changements</Button>
             </div>
           </div>
@@ -121,9 +123,9 @@ export default function DashboardAI() {
                 <p className="font-hand text-lg italic text-flame">Nouveau</p>
                 <h2 className="mt-1 font-display text-4xl font-bold uppercase leading-[0.95] text-ink">Le brunch<br />tous les dimanches<br />de 11h à 15h</h2>
                 <p className="mt-3 text-sm text-ink/60">Produits frais, cuisine maison et ambiance conviviale pour bien commencer le week-end.</p>
-                <button className="mt-4 inline-flex items-center gap-2 rounded-sm bg-flame px-4 py-2.5 text-xs font-bold uppercase tracking-wide text-cream">Réserver une table <ArrowRightIcon className="h-3.5 w-3.5" /></button>
+                <button type="button" className="mt-4 inline-flex items-center gap-2 rounded-sm bg-flame px-4 py-2.5 text-xs font-bold uppercase tracking-wide text-cream">Réserver une table <ArrowRightIcon className="h-3.5 w-3.5" /></button>
               </div>
-              <img src={IMG.brunch} alt="Brunch" loading="lazy" className="aspect-[4/3] w-full rounded-md object-cover" />
+              <img src={IMG.brunch} alt="Brunch" loading="lazy" className="aspect-[4/3] w-full rounded-md object-cover"  decoding="async" />
             </div>
 
             <div className="border-t border-ink/10 p-6">
@@ -140,7 +142,7 @@ export default function DashboardAI() {
                   ['Granola bowl', 'Yaourt grec, granola maison, fruits de saison', '12 €', IMG.greens],
                 ].map(([name, desc, price, img]) => (
                   <div key={name}>
-                    <img src={img} alt={name} loading="lazy" className="aspect-square w-full rounded-md object-cover" />
+                    <img src={img} alt={name} loading="lazy" className="aspect-square w-full rounded-md object-cover"  decoding="async" />
                     <p className="mt-2 text-sm font-bold text-ink">{name}</p>
                     <p className="text-xs text-ink/50">{desc}</p>
                     <p className="mt-1 text-sm font-bold text-flame">{price}</p>

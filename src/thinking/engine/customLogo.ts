@@ -1,9 +1,9 @@
 // Custom Sous logo modes: float and pulse. Both obey the logo-mode
-// contract — beatAt dwell, morph in/out through the seats, ink carried by
-// baked edge — but keep their character in the working form and show the
+// contract , beatAt dwell, morph in/out through the seats, ink carried by
+// baked edge , but keep their character in the working form and show the
 // mark alive rather than static.
 
-import type { Dot, LogoBinding, ModeFrame, OrbFrame } from './types';
+import type { Dot, ModeFrame, OrbFrame } from './types';
 import { finalizeFrame, fibDir, hashD, makeProj, radiusScale, vnoise } from './core';
 import { beatAt, dotAssembly, inkOf } from './logo';
 
@@ -18,11 +18,11 @@ function empty(): OrbFrame {
   return { dots: [], lines: [] };
 }
 
-// --- Float: the mark breathes like it hovers — flotte --------------------
+// --- Float: the mark breathes like it hovers , flotte --------------------
 //
 // Working form: the dot cloud lifts and falls as motes in the air, each
 // bobbing on its own noise phase, drifting slowly. As the mark forms the
-// whole thing settles, then continues to bob while assembled — a steam-kiss
+// whole thing settles, then continues to bob while assembled , a steam-kiss
 // mounted on a slow swell, riding the frame like a cork.
 
 export const frameLogoFloat: ModeFrame = (size, t, o, logo) => {
@@ -76,11 +76,11 @@ export const frameLogoFloat: ModeFrame = (size, t, o, logo) => {
   return finalizeFrame(dots, [], o.rMin);
 };
 
-// --- Pulse: the mark beats and sheds rings — palpite ---------------------
+// --- Pulse: the mark beats and sheds rings , palpite ---------------------
 //
 // Working form: dots revolve slowly in a loose band about the mark's
 // building box, like a seasoning suspended in the liquor. Assembled, the
-// mark pulses — dots swell and dim on the heartbeat of the draw — and each
+// mark pulses , dots swell and dim on the heartbeat of the draw , and each
 // beat sheds a ring of dots that expands outward and dissolves.
 
 export const frameLogoPulse: ModeFrame = (size, t, o, logo) => {
@@ -105,7 +105,7 @@ export const frameLogoPulse: ModeFrame = (size, t, o, logo) => {
   const ringBand = o.sphereR ?? 0.9;
   const dots: Dot[] = [];
   for (let i = 0; i < n; i++) {
-    const [fx, fy, fz] = fibDir(seats[i], n);
+    const [, fy] = fibDir(seats[i], n);
     const ring = Math.sqrt(Math.max(1e-9, 1 - fy * fy)) * ringBand;
 
     // Working form: dots keep to a band tilted toward the viewer, revolving

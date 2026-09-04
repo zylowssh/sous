@@ -2,8 +2,8 @@
 //
 // Deliberately shaped differently from the orb presets. An orb is a fixed
 // design shipped at two hand-tuned sizes, so its presets are indexed by
-// (state × size). A logo is baked per use — the dot COUNT is chosen at bake
-// time to suit the rendered size — so there is nothing left for a size
+// (state × size). A logo is baked per use , the dot COUNT is chosen at bake
+// time to suit the rendered size , so there is nothing left for a size
 // preset to vary except radii, and `radiusScale` already does that
 // sub-linearly. One tuning per state is the whole table.
 
@@ -35,7 +35,7 @@ export type LogoMode =
  *
  * The verbs are the orb states' verbs on purpose, and nine of the ten line
  * up one-for-one. A product can swap a generic orb for its own logo without
- * renaming a single call site — and, more usefully, can run both in the
+ * renaming a single call site , and, more usefully, can run both in the
  * same UI and have them mean the same thing.
  */
 export type LogoState =
@@ -86,7 +86,7 @@ export interface LogoPreset {
  * They previously ran 7.8s, 8.3s and 9.3s, which drift apart on sight and
  * make a grid of them impossible to film as a loop.
  *
- * 5.5 rather than the old minimum of 4 because `solve` needs that long —
+ * 5.5 rather than the old minimum of 4 because `solve` needs that long ,
  * its scramble has to run and reverse inside the dwell and still read.
  * Levelling upward costs the other states nothing; levelling down would
  * have taken the solve apart.
@@ -350,7 +350,7 @@ export interface ResolvedLogo {
 /**
  * Resolve a state and a baked mark into everything the render loop needs.
  *
- * The seat map is built here — once per (points, state) pair — rather than
+ * The seat map is built here , once per (points, state) pair , rather than
  * inside the frame function, because it costs two sorts and the frame
  * function runs sixty times a second on what may be a native UI thread.
  * `overrides` is merged last so a caller can retune a single knob without

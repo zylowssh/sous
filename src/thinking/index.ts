@@ -1,4 +1,4 @@
-// thinking-logos — your mark, animated with the thinking-orbs engine.
+// thinking-logos , your mark, animated with the thinking-orbs engine.
 //
 // A superset of thinking-orbs: the nine procedural orb states are here
 // unchanged, plus five states that animate baked artwork instead of a

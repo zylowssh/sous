@@ -15,7 +15,7 @@ const COLORS = [
   { name: 'paper', hex: '#FDFAF3', use: 'Cartes, formulaires, surfaces posées.' },
   { name: 'ink', hex: '#171310', use: 'Texte principal, boutons sombres.' },
   { name: 'coal', hex: '#0E0C0A', use: 'Sections pleine hauteur, fort contraste.' },
-  { name: 'flame', hex: '#E4572E', use: 'Accent, CTA, logo — la couleur de Sous.' },
+  { name: 'flame', hex: '#E4572E', use: 'Accent, CTA, logo , la couleur de Sous.' },
   { name: 'olive', hex: '#CFCAAD', use: 'Accents discrets et neutres.' },
   { name: 'butter', hex: '#EEC461', use: 'Badges, alertes, instant d’attention.' },
 ];
@@ -52,7 +52,7 @@ const RADII = [
 const MOTIONS = [
   { name: 'word-in · entrée de mot', class: 'animate-[word-in_0.6s_cubic-bezier(0.22,1,0.36,1)_both]', children: <p className="font-display text-2xl uppercase text-flame">Bonjour.</p> },
   { name: 'pop · apparition', class: 'animate-[pop_0.55s_cubic-bezier(0.34,1.56,0.64,1)_both]', children: <span className="block h-7 w-7 rounded-full bg-flame" /> },
-  { name: 'kenburns · photo lente', class: '', children: <img src={IMG.fish} alt="" className="kenburns h-full w-full object-cover" /> },
+  { name: 'kenburns · photo lente', class: '', children: <img src={IMG.fish} alt="" className="kenburns h-full w-full object-cover"  decoding="async" loading="lazy" /> },
   { name: 'floaty · flotte', class: 'animate-floaty [--rot:6deg]', children: <D.AsteriskIcon className="h-9 w-9 text-flame" /> },
 ];
 
@@ -160,7 +160,7 @@ export default function SystemDesignPage() {
               Design<br />system.
             </h1>
             <p className="mt-4 max-w-md text-sm leading-relaxed text-ink/60">
-              Les couleurs, lettres, boutons, ombres et mouvements qui font la maison Sous. Un seul endroit pour tout voir, tout comprendre — et fabriquer ses propres animations.
+              Les couleurs, lettres, boutons, ombres et mouvements qui font la maison Sous. Un seul endroit pour tout voir, tout comprendre , et fabriquer ses propres animations.
             </p>
             <div className="mt-6 flex flex-wrap gap-3">
               <a href="#couleurs" className="inline-flex items-center gap-2 rounded-sm bg-flame px-6 py-3.5 text-sm font-bold text-cream transition-colors hover:bg-ink">
@@ -205,7 +205,7 @@ export default function SystemDesignPage() {
             <Reveal delay={280} className="flex flex-col justify-center rounded-md border border-ink/15 bg-coal p-4 text-cream">
               <p className="text-[10px] font-extrabold uppercase tracking-widest text-flame">Clé d’usage</p>
               <p className="mt-2 text-sm leading-relaxed text-cream/70">
-                Le <span className="font-bold text-flame">flame</span> agit comme épice : un seul accent à la fois. Le reste vit en crème, papier et encre — le charbon pour les moments de contraste.
+                Le <span className="font-bold text-flame">flame</span> agit comme épice : un seul accent à la fois. Le reste vit en crème, papier et encre , le charbon pour les moments de contraste.
               </p>
             </Reveal>
           </div>
@@ -394,7 +394,7 @@ export default function SystemDesignPage() {
             <h2 className="mt-2 font-display text-3xl font-bold uppercase leading-[0.95] tracking-tight text-ink sm:text-4xl">
               Un alphabet tracé à la main.
             </h2>
-            <p className="mt-2 max-w-lg text-sm text-ink/60">Trait 2px, coins arrondis, jamais remplis — sauf le <span className="font-bold text-ink">SousMark</span>. Recollorez via <span className="font-mono text-xs">currentColor</span>.</p>
+            <p className="mt-2 max-w-lg text-sm text-ink/60">Trait 2px, coins arrondis, jamais remplis , sauf le <span className="font-bold text-ink">SousMark</span>. Recollorez via <span className="font-mono text-xs">currentColor</span>.</p>
           </Reveal>
 
           <Reveal className="mt-6">
@@ -459,7 +459,7 @@ export default function SystemDesignPage() {
             <h2 className="mt-2 font-display text-3xl font-bold uppercase leading-[0.95] tracking-tight text-ink sm:text-4xl">
               Des gestes courts, qui racontent.
             </h2>
-            <p className="mt-2 max-w-lg text-sm text-ink/60">Une courbe maison, <span className="font-mono text-xs">cubic-bezier(0.22, 1, 0.36, 1)</span> — un départ rapide, un atterrissage doux. Tout le site ralentit si l’utilisateur préfère le repos.</p>
+            <p className="mt-2 max-w-lg text-sm text-ink/60">Une courbe maison, <span className="font-mono text-xs">cubic-bezier(0.22, 1, 0.36, 1)</span> , un départ rapide, un atterrissage doux. Tout le site ralentit si l’utilisateur préfère le repos.</p>
           </Reveal>
           <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
             {MOTIONS.map((m) => <Anim key={m.name} name={m.name} className={m.class}>{m.children}</Anim>)}
@@ -494,7 +494,7 @@ export default function SystemDesignPage() {
               Le logo sous toutes ses pensées.
             </h2>
             <p className="mt-2 max-w-lg text-sm text-ink/60">
-              La machine <span className="font-semibold text-ink">thinking-orbs</span> — douze états d’orb, du « travail » aux orbites, à la « vapeur » qui fait monter des volutes sur une sphère éteinte — et <span className="font-semibold text-ink">thinking-logos</span>, la même machine qui cuit n’importe quel SVG en nuage de points, votre marque animée en neuf états. Tout est réglable : état, taille, vitesse, teinte, thème — et la cuisson : style, enveloppe 3D, densité, épaisseur.
+              La machine <span className="font-semibold text-ink">thinking-orbs</span> , douze états d’orb, du « travail » aux orbites, à la « vapeur » qui fait monter des volutes sur une sphère éteinte , et <span className="font-semibold text-ink">thinking-logos</span>, la même machine qui cuit n’importe quel SVG en nuage de points, votre marque animée en neuf états. Tout est réglable : état, taille, vitesse, teinte, thème , et la cuisson : style, enveloppe 3D, densité, épaisseur.
             </p>
           </Reveal>
 

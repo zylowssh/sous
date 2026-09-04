@@ -12,13 +12,14 @@ export function Toggle({ checked, onChange, label, desc, icon: Icon, iconBg = 'b
           {desc && <p className="mt-0.5 text-xs text-ink/50">{desc}</p>}
         </div>
       </div>
-      <button
+      <button type="button"
         role="switch"
         aria-checked={checked}
+        aria-label={label}
         onClick={() => onChange(!checked)}
         className={`relative h-6 w-11 shrink-0 rounded-full transition-colors ${checked ? 'bg-flame' : 'bg-ink/15'}`}
       >
-        <span className={`absolute top-0.5 h-5 w-5 rounded-full bg-white shadow transition-transform ${checked ? 'translate-x-5' : 'translate-x-0.5'}`} />
+        <span className={`absolute top-0.5 h-5 w-5 rounded-full bg-paper shadow transition-transform ${checked ? 'translate-x-5' : 'translate-x-0.5'}`} />
       </button>
     </div>
   );
@@ -26,11 +27,13 @@ export function Toggle({ checked, onChange, label, desc, icon: Icon, iconBg = 'b
 
 export function Tabs({ tabs, active, onChange }) {
   return (
-    <div className="flex flex-wrap gap-6 border-b border-ink/10">
+    <div className="flex flex-wrap gap-6 border-b border-ink/10" role="tablist">
       {tabs.map((t) => (
-        <button
+        <button type="button"
           key={t}
           onClick={() => onChange(t)}
+          role="tab"
+          aria-selected={active === t}
           className={`relative pb-3 text-sm font-semibold transition-colors ${active === t ? 'text-flame' : 'text-ink/55 hover:text-ink'}`}
         >
           {t}
@@ -67,13 +70,21 @@ export function Badge({ tone = 'neutral', children }) {
 }
 
 export function Field({ label, hint, children }) {
+  const generatedId = useId();
+  const control = isValidElement(children) && typeof children.type === 'string'
+    ? cloneElement(children, { id: children.props.id ?? generatedId })
+    : children;
+  const controlId = isValidElement(control) ? control.props.id : undefined;
+
   return (
     <div>
       <div className="mb-1.5 flex items-center justify-between">
-        <label className="block text-sm font-semibold text-ink">{label}</label>
+        {controlId
+          ? <label htmlFor={controlId} className="block text-sm font-semibold text-ink">{label}</label>
+          : <p className="block text-sm font-semibold text-ink">{label}</p>}
         {hint && <span className="text-xs text-ink/40">{hint}</span>}
       </div>
-      {children}
+      {control}
     </div>
   );
 }
@@ -89,7 +100,7 @@ export function Button({ variant = 'primary', className = '', children, ...props
     danger: 'border border-red-300 text-red-600 hover:bg-red-50',
   };
   return (
-    <button className={`inline-flex items-center justify-center gap-2 rounded-sm px-4 py-2.5 text-sm font-bold transition-colors ${variants[variant]} ${className}`} {...props}>
+    <button type="button" className={`inline-flex items-center justify-center gap-2 rounded-sm px-4 py-2.5 text-sm font-bold transition-colors ${variants[variant]} ${className}`} {...props}>
       {children}
     </button>
   );
@@ -188,3 +199,4 @@ export function DonutChart({ segments, size = 140, thickness = 18 }) {
     </div>
   );
 }
+import { cloneElement, isValidElement, useId } from 'react';

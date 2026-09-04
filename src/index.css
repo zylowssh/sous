@@ -57,13 +57,101 @@
 @tailwind utilities;
 
 @layer base {
+  :root {
+    --color-cream: #F4EFE5;
+    --color-cream-rgb: 244 239 229;
+    --color-paper: #FDFAF3;
+    --color-paper-rgb: 253 250 243;
+    --color-ink: #171310;
+    --color-ink-rgb: 23 19 16;
+    --color-coal: #0E0C0A;
+    --color-coal-rgb: 14 12 10;
+    --color-flame: #E4572E;
+    --color-flame-rgb: 228 87 46;
+    --color-olive: #CFCAAD;
+    --color-olive-rgb: 207 202 173;
+    --color-butter: #EEC461;
+    --color-butter-rgb: 238 196 97;
+    --color-editorial-cream: #F1EBE3;
+    --color-editorial-paper: #F2ECE2;
+    --color-editorial-ink: #161310;
+    --color-editorial-dark: #0B0A08;
+    --color-editorial-sage: #C9CBB4;
+    --color-product-sage: #C7C8B1;
+    --color-flame-legacy: #E4501E;
+    --color-editorial-muted: #8A8375;
+    --color-editorial-copy: #3E382E;
+    --color-editorial-rule: #5D5749;
+    --color-editorial-deep: #22201C;
+    --color-editorial-near-black: #14100B;
+    --color-editorial-paper-alt: #EFE9DC;
+    --color-editorial-cream-alt: #EDE6DA;
+    --color-editorial-taupe: #6B6459;
+    --color-editorial-paper-soft: #F2EDE4;
+    --color-editorial-gold: #E9C46A;
+    --color-editorial-gray: #B5AFA6;
+    --color-editorial-charcoal: #26221C;
+    --color-editorial-red: #C9401F;
+    --color-editorial-brown-black: #140F0A;
+    --color-editorial-surface: #F5F0E6;
+    --color-editorial-copy-dark: #3A362E;
+  }
   html { scroll-behavior: smooth; }
   body { @apply bg-cream font-sans text-ink antialiased; }
   ::selection { @apply bg-flame text-ink; }
-  :focus-visible { outline-color: #E4572E; }
+  :focus-visible { outline-color: var(--color-flame); }
 }
 
 @layer components {
+  /* Editorial campaign pages share these art-direction utilities. */
+  .ex-root,
+  .sous-root,
+  .tr-root {
+    color: var(--color-editorial-ink);
+    font-family: 'Inter', system-ui, sans-serif;
+  }
+
+  .fd { font-family: 'Anton', 'Arial Narrow', sans-serif; }
+  .fm { font-family: 'Space Mono', ui-monospace, monospace; }
+  .fh { font-family: 'Caveat', cursive; }
+  .fs { font-family: 'Playfair Display', Georgia, serif; }
+
+  .paper-shadow {
+    box-shadow: 0 45px 80px -30px rgba(30, 20, 5, 0.45), 0 15px 30px -15px rgba(30, 20, 5, 0.3);
+  }
+  .card-shadow { box-shadow: 0 25px 55px -22px rgba(30, 20, 5, 0.4); }
+  .soft-shadow { box-shadow: 0 18px 40px -18px rgba(30, 20, 5, 0.35); }
+
+  .ex-root .checker {
+    background: repeating-conic-gradient(#c9401f 0% 25%, #f3ebdd 0% 50%);
+    background-size: 16px 16px;
+  }
+
+  .sous-root .metal {
+    background: linear-gradient(180deg, #f0eeea 0%, #c9c5bd 28%, #8f8b84 60%, #6b6761 100%);
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.75);
+  }
+
+  .tr-root .paper-shadow {
+    box-shadow: 0 45px 80px -30px rgba(30, 20, 5, 0.4), 0 15px 30px -15px rgba(30, 20, 5, 0.28);
+  }
+  .tr-root .metal {
+    background: linear-gradient(180deg, #f0eeea 0%, #c9c5bd 28%, #8f8b84 60%, #6b6761 100%);
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.75);
+  }
+  .tr-root .brass {
+    background: linear-gradient(180deg, #d9b26a, #8a6a2f 70%, #6d5222);
+  }
+
+  .not-found-receipt::after {
+    content: '';
+    position: absolute;
+    inset: auto 0 -12px;
+    height: 14px;
+    background: linear-gradient(135deg, transparent 50%, var(--color-paper) 51%) 0 0 / 20px 20px,
+      linear-gradient(225deg, transparent 50%, var(--color-paper) 51%) 10px 0 / 20px 20px;
+  }
+
   /* Mobile/tablet: each section is a full-page floating rounded card —
      fills the viewport (minus a small margin gap) so each section reads as
      its own full-screen card when scrolling, matching the reference layout. */

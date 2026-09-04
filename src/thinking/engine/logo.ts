@@ -1,13 +1,13 @@
 // The logo modes: a baked mark, animated with the orbs' visual language.
 //
-// Every mode here obeys the same contract as the nine orb modes — pure
+// Every mode here obeys the same contract as the nine orb modes , pure
 // arithmetic over (size, t, opts), producing a finished, z-sorted frame.
 // The only difference is where the geometry comes from: procedurally
 // generated for an orb, baked from artwork for a logo. Depth is still
 // carried by dot radius and ink weight alone, so a logo and an orb sitting
 // next to each other read as the same material.
 
-import type { Dot, LogoBinding, ModeFrame, OrbFrame } from './types';
+import type { Dot, ModeFrame, OrbFrame } from './types';
 import type { LogoPointSet, SeatMap } from './cloud';
 import { angleDelta, fibDir, finalizeFrame, hashD, makeProj, radiusScale, vnoise } from './core';
 
@@ -18,7 +18,7 @@ function smoothE(x: number): number {
 }
 
 /**
- * Smootherstep — zero first AND second derivative at both ends.
+ * Smootherstep , zero first AND second derivative at both ends.
  *
  * Smoothstep stops with zero velocity but a sudden change in acceleration,
  * which the eye reads as a small jolt at the end of a long move. Over a
@@ -36,7 +36,7 @@ function clamp01(x: number): number {
 /**
  * Pair every logo dot with the sphere seat it flies home from.
  *
- * Pairing by index would work, and looks like static — the dots cross each
+ * Pairing by index would work, and looks like static , the dots cross each
  * other in a uniform scramble and the assembly reads as noise resolving,
  * not as a mark forming. Pairing by angle about the centre means each dot
  * travels roughly radially, the cloud folds inward like a closing aperture,
@@ -101,21 +101,21 @@ export function inkOf(o: Record<string, number | undefined>, zx: number, edge: n
  * Two wrong turns got here. First it was a highlight crossing the
  * stationary logo, which next to the other states read as a shimmer applied
  * to a mark, with no idea of *searching* anywhere in it. Then it was a
- * wireframe of meridians and parallels — which said globe, but said it the
+ * wireframe of meridians and parallels , which said globe, but said it the
  * way every stock icon says it, and packed the dots into lines that bunch
  * at the poles and thin at the equator.
  *
  * The dots are now spread by the Fibonacci lattice, which is the closest
  * thing there is to equal spacing on a sphere: no seams, no poles, no
  * clumping, and no borrowed iconography. What makes it read as searching is
- * not the construction but the SWEEP — a meridian of longitude travelling
+ * not the construction but the SWEEP , a meridian of longitude travelling
  * round the surface with everything behind it held back. An even field lit
  * by a moving line reads as something being scanned; a drawn grid just
  * reads as a picture of a globe.
  *
  * It shares its lattice with `thinking`'s orb and stays completely distinct
  * from it, because the difference between those two states was never the
- * geometry — one is an inert ball dissolving, the other is a surface being
+ * geometry , one is an inert ball dissolving, the other is a surface being
  * examined.
  */
 export const frameLogoScan: ModeFrame = (size, t, o, logo) => {
@@ -143,7 +143,7 @@ export const frameLogoScan: ModeFrame = (size, t, o, logo) => {
   const sphereR = o.sphereR ?? 0.94;
   const width = o.scanWidth ?? 0.22;
   // A meridian in the sphere's own longitude, so the lit band runs pole to
-  // pole and bows with the surface — that curved, oval band is the whole
+  // pole and bows with the surface , that curved, oval band is the whole
   // look, and a band measured in screen space is a flat wipe that reads as
   // a shimmer laid over the object rather than as light on it.
   //
@@ -165,7 +165,7 @@ export const frameLogoScan: ModeFrame = (size, t, o, logo) => {
   // A Fibonacci sphere already contains them: points whose indices differ
   // by a Fibonacci number are neighbours along one arm, so `i mod 13`
   // labels which of thirteen spirals a dot belongs to. Left alone that
-  // structure is invisible — every dot the same weight reads as an even
+  // structure is invisible , every dot the same weight reads as an even
   // fog, which is what made this orb the plainest thing in the set.
   // Weighting the arms in a repeating cycle makes the spirals surface as
   // threads winding pole to pole. Nothing is moved; the geometry is the
@@ -180,7 +180,7 @@ export const frameLogoScan: ModeFrame = (size, t, o, logo) => {
     // Loosen the poles.
     //
     // The lattice is equal-area, so the caps hold as many dots per square
-    // unit as the equator does — but a sphere presents its caps almost
+    // unit as the equator does , but a sphere presents its caps almost
     // edge-on, and equal area over a foreshortened region reads as a
     // pile-up. Compressing latitude toward the equator by a fractional
     // power moves dots out of the caps and leaves them airier, and because
@@ -229,7 +229,7 @@ export const frameLogoScan: ModeFrame = (size, t, o, logo) => {
 };
 
 /**
- * easeInOutExpo — the CSS `cubic-bezier(0.87, 0, 0.13, 1)` curve.
+ * easeInOutExpo , the CSS `cubic-bezier(0.87, 0, 0.13, 1)` curve.
  *
  * Near-still at both ends, very fast through the middle.
  */
@@ -244,13 +244,13 @@ export function expoInOut(x: number): number {
  *
  * Pure expo was tried and works against what this transition needs. Its
  * flat tails mean the morph barely moves for the first and last third,
- * which reads as the mark pausing at each end — the exact pause being
- * designed out — while its violent middle covers most of the distance in a
+ * which reads as the mark pausing at each end , the exact pause being
+ * designed out , while its violent middle covers most of the distance in a
  * few frames and reads as a snap. Slow AND stalled, which is the worst of
  * both.
  *
- * The blend keeps expo's character — a deliberate ease in, a confident
- * middle — without the dead zones. Duration does the rest: 300 dots
+ * The blend keeps expo's character , a deliberate ease in, a confident
+ * middle , without the dead zones. Duration does the rest: 300 dots
  * travelling across the frame need several times the 0.6s a CSS transform
  * on a single block would.
  */
@@ -264,7 +264,7 @@ function morphEase(x: number, expo: number): number {
  *
  * A plain smootherstep across a long span puts all the speed in the middle,
  * so the orb visibly surges and slows for no reason. What is wanted is a
- * turn that starts, holds a steady rate, and stops — the ramps are shaped,
+ * turn that starts, holds a steady rate, and stops , the ramps are shaped,
  * the middle is linear, and the whole thing integrates to exactly 1.
  */
 function cruise(x: number, edge: number): number {
@@ -289,7 +289,7 @@ export interface Beat {
   m: number;
   /** Whole turns completed; lands on an integer before the mark appears. */
   turns: number;
-  /** Seconds into the working-form dwell — what `solve` and `scan` run on. */
+  /** Seconds into the working-form dwell , what `solve` and `scan` run on. */
   workT: number;
   local: number;
   cycle: number;
@@ -309,10 +309,10 @@ export interface Beat {
  * out partway through the morph in, so the orb is still turning as it
  * begins to become the mark, then settles. On the way back there is none at
  * all: a whole turn crammed into a short exit is the spin that reads as
- * frantic, and it buys nothing — the form is dissolving anyway.
+ * frantic, and it buys nothing , the form is dissolving anyway.
  *
  * Because the count of turns is a whole number, the mark is always shown at
- * a whole revolution — dead face-on, every cycle — and the cycle closes
+ * a whole revolution , dead face-on, every cycle , and the cycle closes
  * seamlessly with no accumulator and no state.
  */
 export function beatAt(
@@ -377,7 +377,7 @@ export const frameLogoAssemble: ModeFrame = (size, t, o, logo) => {
   // transition felt rougher than that one. A per-dot stagger gives every
   // dot its own delayed sub-curve, so the cloud arrives as a smear rather
   // than a movement; the outward bow adds a second, perpendicular motion on
-  // top. Both were solving a problem — a knot forming at the centre — that
+  // top. Both were solving a problem , a knot forming at the centre , that
   // the eased envelope had already solved on its own.
   const stagger = o.stagger ?? 0;
   const arc = o.arc ?? 0;
@@ -391,14 +391,14 @@ export const frameLogoAssemble: ModeFrame = (size, t, o, logo) => {
   for (let i = 0; i < n; i++) {
     // `dotAssembly` layers a second smoothstep on top of an already-eased
     // parameter, which reads as sluggish at both ends. With no stagger
-    // asked for, use the envelope's own value — the way every other state
+    // asked for, use the envelope's own value , the way every other state
     // does.
     const mi = stagger > 0 ? dotAssembly(i, m, stagger) : m;
 
     const seat = seats[i];
     const [fx, fy, fz] = fibDir(seat, n);
     // Sphere seats breathe on their own so the dispersed state is alive
-    // rather than a frozen ball waiting for its cue — which matters far
+    // rather than a frozen ball waiting for its cue , which matters far
     // more now that the orb is where most of the cycle is spent.
     const wob = sphereR * (1 + churn * (vnoise(fx * 2 + t * 0.7, fz * 2) - 0.5) * 2);
 
@@ -460,8 +460,8 @@ export const frameLogoAssemble: ModeFrame = (size, t, o, logo) => {
  * crowded family of round things. The mistake was reaching for another
  * OBJECT when what the state needed was an ACT.
  *
- * `generating` supplies the mechanic — a bright head working its way over
- * the form — and this inverts it. There the whole crystal is present and
+ * `generating` supplies the mechanic , a bright head working its way over
+ * the form , and this inverts it. There the whole crystal is present and
  * the head colours it in; here the thread does not exist until the head has
  * laid it. One fills a surface, the other draws a line, so the two read as
  * different kinds of labour rather than the same trick twice.
@@ -493,7 +493,7 @@ export const frameLogoWork: ModeFrame = (size, t, o, logo) => {
   );
 
   // Wind across the dwell, hold complete while the mark shows, unwind on
-  // the way back — so the cycle reaches its own start with nothing laid,
+  // the way back , so the cycle reaches its own start with nothing laid,
   // rather than resetting there.
   const into = b.local - dwell;
   const prog =
@@ -533,7 +533,7 @@ export const frameLogoWork: ModeFrame = (size, t, o, logo) => {
     const z3 = lz + (bz - lz) * c;
 
     // Laid or not yet. Unlike `generating`, what is not yet worked is not
-    // there at all — the thread grows rather than filling in.
+    // there at all , the thread grows rather than filling in.
     const laid = clamp01((head - seat) / feather);
     const at = winding ? Math.exp(-(((seat - head) / headW) ** 2)) : 0;
 

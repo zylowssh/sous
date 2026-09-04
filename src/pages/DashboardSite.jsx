@@ -2,18 +2,19 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { DashboardTopbar } from '../components/DashboardLayout';
 import { Card, Tabs, Field, inputCls, Toggle, Button } from '../components/dashboard-ui';
-import { ArrowRightIcon, GlobeIcon, CheckIcon, EditIcon } from '../components/doodles';
-import { ShieldIcon, ClockIcon } from '../components/doodles';
-import { UploadIcon, DownloadIcon, TrashIcon } from '../components/dashicons';
+import { ArrowRightIcon, GlobeIcon, EditIcon } from '../components/doodles';
+import { ShieldIcon, ClockIcon, UploadIcon } from '../components/doodles';
+import { DownloadIcon, TrashIcon } from '../components/dashicons';
 import { IMG } from '../data';
+import usePersistentState from '../hooks/usePersistentState';
 
 const TABS = ['Général', 'Pages', 'Domaine', 'SEO', 'Personnalisation', 'Code & suivi', 'Sauvegardes'];
 
 export default function DashboardSite() {
   const [tab, setTab] = useState('Général');
-  const [maintenance, setMaintenance] = useState(false);
-  const [name, setName] = useState('Mamma Rosa');
-  const [desc, setDesc] = useState('Cuisine italienne authentique faite maison avec des ingrédients frais et de saison.');
+  const [maintenance, setMaintenance] = usePersistentState('site-maintenance', false);
+  const [name, setName] = usePersistentState('site-name', 'Mamma Rosa');
+  const [desc, setDesc] = usePersistentState('site-description', 'Cuisine italienne authentique faite maison avec des ingrédients frais et de saison.');
 
   return (
     <div className="pb-16">
@@ -95,7 +96,7 @@ export default function DashboardSite() {
             <Card title="Référencement (SEO)">
               <div className="space-y-4">
                 <Field label="Titre de la page" hint="55/60">
-                  <input defaultValue="Mamma Rosa — Cuisine italienne à Paris" className={inputCls} />
+                  <input defaultValue="Mamma Rosa , Cuisine italienne à Paris" className={inputCls} />
                 </Field>
                 <Field label="Meta description" hint="118/160">
                   <textarea rows={3} defaultValue="Découvrez Mamma Rosa, trattoria italienne chaleureuse à Paris. Réservez votre table en ligne." className={inputCls} />
@@ -151,10 +152,10 @@ export default function DashboardSite() {
                   <div className="flex gap-1"><EditIcon className="h-3 w-3" /></div>
                 </div>
                 <div className="relative">
-                  <img src={IMG.interior} alt="" loading="lazy" className="aspect-video w-full object-cover" />
+                  <img src={IMG.interior} alt="" loading="lazy" className="aspect-video w-full object-cover"  decoding="async" />
                   <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-ink/80 to-transparent p-3 text-cream">
                     <p className="font-display text-sm uppercase leading-tight">La dolce vita,<br />dans votre assiette.</p>
-                    <button className="mt-1.5 rounded-sm bg-cream px-2.5 py-1 text-[9px] font-bold text-ink">Réserver une table</button>
+                    <button type="button" className="mt-1.5 rounded-sm bg-cream px-2.5 py-1 text-[9px] font-bold text-ink">Réserver une table</button>
                   </div>
                 </div>
               </div>
@@ -177,13 +178,13 @@ export default function DashboardSite() {
                   [UploadIcon, 'Sauvegarder maintenant', 'Créez une sauvegarde manuelle de votre site.'],
                   [DownloadIcon, 'Exporter le site', 'Téléchargez une copie de votre site.'],
                 ].map(([Icon, t, d]) => (
-                  <button key={t} className="flex w-full items-center gap-3 py-3 text-left">
+                  <button type="button" key={t} className="flex w-full items-center gap-3 py-3 text-left">
                     <Icon className="h-4 w-4 text-ink/50" />
                     <div className="flex-1"><p className="text-sm font-semibold text-ink">{t}</p><p className="text-xs text-ink/45">{d}</p></div>
                     <ArrowRightIcon className="h-4 w-4 text-ink/30" />
                   </button>
                 ))}
-                <button className="flex w-full items-center gap-3 py-3 text-left text-red-600">
+                <button type="button" className="flex w-full items-center gap-3 py-3 text-left text-red-600">
                   <TrashIcon className="h-4 w-4" />
                   <div className="flex-1"><p className="text-sm font-semibold">Réinitialiser le site</p><p className="text-xs text-red-400">Supprimez tout le contenu et recommencez.</p></div>
                 </button>

@@ -1,6 +1,6 @@
 // The ThinkingLogo component: your mark, animated like the orbs.
 //
-// Shares ThinkingOrb's render discipline exactly — one shared clock so every
+// Shares ThinkingOrb's render discipline exactly , one shared clock so every
 // mounted instance stays in phase, a per-instance rAF loop that stops while
 // offscreen or on a hidden tab, and a single static frame for viewers who
 // asked for reduced motion. The only additions are the bake (async, cached,
@@ -24,15 +24,15 @@ import { useBakedLogo } from './useBakedLogo';
  * One clock for every mounted instance, advanced once per animation frame.
  *
  * Wall-clock time is the obvious source and it has a failure this library
- * cannot afford: any long task — a bake, a syntax highlight, a slow
- * extension — stops the frames but not the clock, so the animation resumes
+ * cannot afford: any long task , a bake, a syntax highlight, a slow
+ * extension , stops the frames but not the clock, so the animation resumes
  * by jumping forward by however long the page was busy. Read on load it
  * looks like the mark freezes and then fast-forwards, which is exactly what
  * it is.
  *
  * Accumulating per frame with a ceiling on the step means a stall pauses the
  * animation instead of skipping it. Every instance reads the same
- * accumulator, so they stay in step with each other however they mount —
+ * accumulator, so they stay in step with each other however they mount ,
  * the property the old shared wall clock was there for.
  */
 const MAX_STEP = 0.1;
@@ -75,7 +75,7 @@ export interface ThinkingLogoProps extends Omit<CanvasHTMLAttributes<HTMLCanvasE
   theme?: OrbTheme;
 
   /**
-   * Brand colour as `#rrggbb`. Replaces the hue only — depth still reads
+   * Brand colour as `#rrggbb`. Replaces the hue only , depth still reads
    * through the ink ramp. Omit for the default monochrome.
    */
   tint?: string;
@@ -98,7 +98,7 @@ export interface ThinkingLogoProps extends Omit<CanvasHTMLAttributes<HTMLCanvasE
   startAtMark?: boolean;
 
   /**
-   * Bake overrides. `count` defaults to whatever stays legible at `size` —
+   * Bake overrides. `count` defaults to whatever stays legible at `size` ,
    * override it only after previewing at the smallest size you ship.
    */
   bake?: BakeOptions;
@@ -133,7 +133,7 @@ export function ThinkingLogo({
   const reduced = useReducedMotion();
 
   // Dot count is a function of the rendered size, so it is defaulted here
-  // rather than in the baker — the baker has no idea how big this will be
+  // rather than in the baker , the baker has no idea how big this will be
   // drawn, and a count tuned for 64px turns a 20px mark into a smudge.
   const style_ = bake?.style ?? 'fill';
   const bakeOpts: BakeOptions = { count: recommendedCount(size, style_), ...bake };

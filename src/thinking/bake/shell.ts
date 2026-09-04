@@ -3,7 +3,7 @@
 // This is the step that makes a logo behave like the orbs instead of like a
 // sticker. The engine carries depth purely through dot radius and ink
 // weight, so a point cloud with a real z distribution picks up that whole
-// visual language for free — near dots grow and brighten, far dots recede,
+// visual language for free , near dots grow and brighten, far dots recede,
 // z-sorting does the occlusion. A z of zero everywhere renders as a flat
 // card that vanishes edge-on when it rotates.
 
@@ -15,7 +15,7 @@ import type { Pt } from './contour';
  * Chamfer distance transform: for every pixel, the approximate distance to
  * the nearest non-ink pixel.
  *
- * Exact Euclidean would cost more and buy nothing here — the result only
+ * Exact Euclidean would cost more and buy nothing here , the result only
  * drives a smooth height ramp, where a few percent of anisotropy is
  * invisible. The (3, 4) weights are the standard integer approximation;
  * dividing by 3 converts back to pixel units.
@@ -64,17 +64,17 @@ export interface ShellPoint {
  * Lift 2D mask-space points into the engine's unit-sphere coordinate space.
  *
  * Output is centred on the origin with y pointing UP, matching `makeProj`
- * in the engine — mask space is y-down, and flipping here rather than in the
+ * in the engine , mask space is y-down, and flipping here rather than in the
  * renderer keeps every downstream consumer (canvas, Skia, SwiftUI) working
  * from one convention.
  *
- * - `flat` — z = 0. Cheapest, and correct when the mark should read as a
+ * - `flat` , z = 0. Cheapest, and correct when the mark should read as a
  *   graphic rather than an object.
- * - `dome` — inflate: height rises with distance from the edge, so the
+ * - `dome` , inflate: height rises with distance from the edge, so the
  *   silhouette stays pinned to the plane while the body bulges toward the
  *   viewer. `sqrt` rather than a linear ramp, because a linear one gives a
  *   cone-shaped profile with a visible crease along the medial axis.
- * - `slab` — extrude to a front and a back face joined by a wall of outline
+ * - `slab` , extrude to a front and a back face joined by a wall of outline
  *   dots, so the mark has thickness and reads as a solid turning in space.
  */
 export function buildShell(

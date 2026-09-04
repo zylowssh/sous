@@ -30,7 +30,7 @@ export default function DashboardHelp() {
       <div className="px-6 sm:px-10">
         <div className="relative mb-8">
           <SearchIcon className="pointer-events-none absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-ink/35" />
-          <input placeholder="Rechercher dans l'aide..." className="w-full rounded-sm border border-ink/15 bg-paper py-3.5 pl-11 pr-4 text-sm placeholder:text-ink/35 focus:border-flame focus:outline-none" />
+          <input aria-label="Rechercher dans le centre d’aide" placeholder="Rechercher dans l'aide..." className="w-full rounded-sm border border-ink/15 bg-paper py-3.5 pl-11 pr-4 text-sm placeholder:text-ink/35 focus:border-flame focus:outline-none" />
         </div>
 
         <div className="grid gap-5 lg:grid-cols-[1.6fr_1fr]">
@@ -38,7 +38,7 @@ export default function DashboardHelp() {
             <p className="mb-3 text-sm font-extrabold text-ink">Catégories populaires</p>
             <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
               {categories.map((c) => (
-                <button key={c.title} className="flex flex-col items-start gap-2 rounded-lg border border-ink/10 bg-paper p-5 text-left hover:border-ink/25">
+                <button type="button" key={c.title} className="flex flex-col items-start gap-2 rounded-lg border border-ink/10 bg-paper p-5 text-left hover:border-ink/25">
                   <div className={`flex h-10 w-10 items-center justify-center rounded-md ${c.iconBg}`}><c.icon className="h-5 w-5" /></div>
                   <p className="text-sm font-bold text-ink">{c.title}</p>
                   <p className="text-xs text-ink/50">{c.desc}</p>
@@ -50,13 +50,13 @@ export default function DashboardHelp() {
             <Card title="Articles récents" className="mt-6">
               <div className="divide-y divide-ink/10">
                 {articles.map(([t, d]) => (
-                  <button key={t} className="flex w-full items-center justify-between gap-3 py-3 text-left">
+                  <button type="button" key={t} className="flex w-full items-center justify-between gap-3 py-3 text-left">
                     <span className="flex items-center gap-2 text-sm font-semibold text-ink"><BookIcon className="h-4 w-4 shrink-0 text-ink/35" /> {t}</span>
                     <span className="shrink-0 text-xs text-ink/40">{d}</span>
                   </button>
                 ))}
               </div>
-              <button className="mt-3 flex items-center gap-1 text-xs font-bold text-flame">Voir tous les articles <ArrowRightIcon className="h-3 w-3" /></button>
+              <button type="button" className="mt-3 flex items-center gap-1 text-xs font-bold text-flame">Voir tous les articles <ArrowRightIcon className="h-3 w-3" /></button>
             </Card>
           </div>
 
@@ -69,7 +69,7 @@ export default function DashboardHelp() {
                   [SparkleIcon, 'Nouveautés', 'Découvrez les dernières mises à jour de Sous.'],
                   [GearIcon, 'Statut', "Vérifiez l'état des services et maintenances."],
                 ].map(([Icon, t, d]) => (
-                  <button key={t} className="flex w-full items-center gap-3 py-3 text-left">
+                  <button type="button" key={t} className="flex w-full items-center gap-3 py-3 text-left">
                     <Icon className="h-4 w-4 shrink-0 text-ink/50" />
                     <div className="flex-1"><p className="text-sm font-semibold text-ink">{t}</p><p className="text-xs text-ink/45">{d}</p></div>
                     <ArrowRightIcon className="h-4 w-4 shrink-0 text-ink/25" />

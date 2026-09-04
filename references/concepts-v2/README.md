@@ -1,6 +1,8 @@
 # Sous page concepts v2
 
-Generated with the built-in ImageGen tool as implementation references. Each PNG is one horizontal website section. No application code was changed.
+Generated with the built-in ImageGen tool as implementation references. Marketing PNGs each describe one horizontal section. Auth and signup PNGs describe screens or wizard states, while dashboard PNGs describe separate routes inside one shared shell. No application code was changed.
+
+Before implementing these references with an AI coding agent, read [AI-IMPLEMENTATION-GUIDE.md](./AI-IMPLEMENTATION-GUIDE.md). It defines section boundaries, route mapping, responsive translation, shared shells, interaction requirements and reference-conflict rules.
 
 ## Shared art direction
 
@@ -37,3 +39,41 @@ Generated with the built-in ImageGen tool as implementation references. Each PNG
 4. `04-pro.png`: Pro value demonstrated through a real promotion and reservation workflow.
 5. `05-faq.png`: accessible FAQ paired with a human support contact.
 6. `06-cta.png`: decisive 49-euro closing CTA with no hidden fees and no commitment.
+
+## Signup prompt set
+
+1. `signup/01-restaurant.png`: restaurant intake ticket paired with a live, image-free site preview.
+2. `signup/02-account.png`: high-contrast account creation form with a physical owner slip.
+3. `signup/03-connect.png`: POS, photo and opening-hours setup as interactive tickets on a kitchen rail.
+4. `signup/04-direction.png`: five distinct restaurant identities presented as a selectable contact sheet.
+5. `signup/05-review.png`: final onboarding summary and explicit validation promise on a clipped order ticket.
+
+## Sign-in prompt set
+
+1. `signin/01-login.png`: focused login receipt on coal, with a direct path back to account creation.
+
+## Legal prompt set
+
+1. `legal/01-mentions-legales.png`: legal register with a fixed contents index and readable two-column document.
+2. `legal/02-confidentialite.png`: privacy policy organized as five ruled rows with rights highlighted in olive.
+3. `legal/03-cgu.png`: terms-of-use contract with a seven-part index and explicit client-validation reminder.
+
+## 404 prompt set
+
+1. `404/01-not-found.png`: oversized 404 typography and a stamped missing-table reservation ticket.
+
+## Dashboard prompt set
+
+1. `dashboard/01-overview.png`: overview with status tickets on a kitchen rail, activity ledger, Sous AI pad and performance strip.
+2. `dashboard/02-sous-ai.png`: assistant conversation beside a locked draft preview awaiting explicit validation.
+3. `dashboard/03-site.png`: site settings sheet, live preview, publication status and maintenance controls.
+4. `dashboard/04-site-editor.png`: section inspector and full-width restaurant-site editing canvas.
+5. `dashboard/05-menu.png`: category index, dense menu ledger, dish editor and compliance strip.
+6. `dashboard/06-reservations.png`: table timeline with booking slips and a detailed reservation receipt.
+7. `dashboard/07-medias.png`: gallery-led media contact sheet with folders, metadata and storage state.
+8. `dashboard/08-statistiques.png`: restrained analytics sheet with one primary chart, source bars and ranked dishes.
+9. `dashboard/09-integrations.png`: connected-service tickets with the POS-to-menu-to-site-to-QR flow made explicit.
+10. `dashboard/10-parametres.png`: predictable settings index, general fields, preferences and separated danger zone.
+11. `dashboard/11-profil.png`: personal record sheet, owner credential and password controls.
+12. `dashboard/12-contact.png`: message form, human support contact sheet and compact FAQ.
+13. `dashboard/13-aide.png`: searchable help manual with indexed categories, articles and support resources.

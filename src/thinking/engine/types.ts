@@ -8,7 +8,7 @@ export type { Dot, Line, OrbFrame } from './core';
 import type { OrbFrame } from './core';
 
 /**
- * A baked mark plus its resolved sphere pairing — everything a logo mode
+ * A baked mark plus its resolved sphere pairing , everything a logo mode
  * needs that is not a tuning scalar.
  *
  * It is a separate argument rather than a member of `ModeOpts` on purpose.
@@ -25,7 +25,7 @@ export interface LogoBinding {
 
 /**
  * Geometry for one instant: pure math over (size, t, opts), no rendering
- * surface and no theme — `dark` only affects ink at paint time.
+ * surface and no theme , `dark` only affects ink at paint time.
  *
  * Deliberately closure-free and `Math`-only so the same function can run
  * inside a Reanimated worklet on the React Native UI thread, and so its

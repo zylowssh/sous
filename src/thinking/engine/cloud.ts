@@ -3,7 +3,7 @@
 // It lives in `engine/` rather than in `bake/` deliberately: the engine is
 // the portable half, and this is the only shape it needs to know about. A
 // React Native or SwiftUI port imports the engine and consumes a point set
-// that was baked somewhere else entirely — possibly at build time, on a
+// that was baked somewhere else entirely , possibly at build time, on a
 // different machine, by a rasteriser that platform doesn't even have.
 //
 // Everything here is plain data. No methods, no classes, no closures.
@@ -21,7 +21,7 @@ export type ShellMode = 'flat' | 'dome' | 'slab';
  * weight ink so an interior can sit back from its outline.
  *
  * Flat typed arrays because this is indexed once per point per frame at
- * 60fps — an array of objects would cost a pointer chase per dot and defeat
+ * 60fps , an array of objects would cost a pointer chase per dot and defeat
  * the worklet-safety the engine is built around.
  */
 export interface LogoPointSet {

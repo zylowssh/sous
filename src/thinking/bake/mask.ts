@@ -25,7 +25,7 @@ export function maskAt(m: AlphaMask, x: number, y: number): number {
   return m.a[y * m.w + x];
 }
 
-/** Coverage test against a threshold — the single definition of "inside". */
+/** Coverage test against a threshold , the single definition of "inside". */
 export function isInk(m: AlphaMask, x: number, y: number, thr: number): boolean {
   return maskAt(m, x, y) >= thr;
 }
@@ -33,7 +33,7 @@ export function isInk(m: AlphaMask, x: number, y: number, thr: number): boolean 
 /**
  * Bilinear coverage at fractional coords. The Poisson sampler tests
  * candidate points that never land on pixel centres, and snapping them to
- * integers would quantise the silhouette edge to the raster grid — visible
+ * integers would quantise the silhouette edge to the raster grid , visible
  * as a stair-stepped outline once the dots are only a few pixels apart.
  */
 export function maskAtF(m: AlphaMask, x: number, y: number): number {
@@ -72,7 +72,7 @@ function readMask(ctx: CanvasRenderingContext2D, w: number, h: number): AlphaMas
  * a fixed margin.
  *
  * This is what makes different logos land at the same visual weight. Source
- * SVGs disagree wildly about padding — some marks fill their viewBox edge to
+ * SVGs disagree wildly about padding , some marks fill their viewBox edge to
  * edge, others float in 40% whitespace. Normalising here means a caller's
  * `size` prop means the same thing for every logo, instead of silently
  * inheriting whatever the designer's export settings were.
@@ -160,7 +160,7 @@ export async function rasterizeSvg(svgText: string, res: number): Promise<AlphaM
 }
 
 /**
- * Rasterise a bare path `d` string — the shape most icon sets ship (a
+ * Rasterise a bare path `d` string , the shape most icon sets ship (a
  * single path on a square viewBox). Synchronous, since `Path2D` needs no
  * image decode.
  */

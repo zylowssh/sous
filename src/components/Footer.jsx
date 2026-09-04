@@ -9,12 +9,12 @@ const footerCols = [
       { label: 'Le produit', href: '/produit' },
       { label: 'Exemples', href: '/exemples' },
       { label: 'Tarifs', href: '/tarifs' },
-      { label: 'Design system', href: '/system-design' },
     ],
   },
   {
-    title: 'CONTACT',
+    title: 'AIDE',
     links: [
+      { label: 'Centre d’aide', href: '#help' },
       { label: 'contact@sous-app.fr', href: 'mailto:contact@sous-app.fr' },
     ],
   },
@@ -25,7 +25,7 @@ const footerCols = [
   ] },
 ];
 
-const HOME_SECTIONS = new Set(['top', 'product', 'how', 'examples', 'tell', 'menu', 'testimonial', 'pricing']);
+const HOME_SECTIONS = new Set(['top', 'product', 'how', 'examples', 'tell', 'menu', 'testimonial', 'pricing', 'faq', 'help']);
 
 export default function Footer() {
   const location = useLocation();
@@ -44,8 +44,11 @@ export default function Footer() {
     // All other links use React Router's <Link> default behavior
   };
 
+  const routeFor = (href) => (!isLanding && href.startsWith('#') ? `/${href}` : href);
+  const linkClassName = 'rounded-sm text-xs text-ink/80 transition-colors hover:text-flame focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-flame md:text-sm';
+
   return (
-    <footer className="border-t border-ink/15 bg-cream py-10">
+    <footer id="site-footer" className="border-t border-ink/15 bg-cream py-10">
       <div className="mx-auto grid max-w-7xl gap-8 px-4 md:px-8 lg:grid-cols-[1fr_2fr_auto]">
         <div className="flex items-start gap-3">
           <span className="flex items-center gap-2 font-display text-3xl font-bold tracking-tight text-ink md:text-5xl">
@@ -55,23 +58,20 @@ export default function Footer() {
           <div>
             <p className="font-hand text-base text-ink/80 md:text-lg">Des sites qui servent vos plats.</p>
             <p className="mt-1 max-w-[16rem] text-xs text-ink/70 md:text-sm">Votre site web, enfin à votre image. Zéro template, zéro stress, 100% vous.</p>
-            <a href="mailto:contact@sous-app.fr" className="mt-2 inline-block text-xs font-semibold text-ink/80 underline decoration-ink/30 underline-offset-4 transition-colors hover:text-flame md:text-sm">
-              contact@sous-app.fr
-            </a>
           </div>
         </div>
 
         <div className="grid grid-cols-2 gap-6 sm:grid-cols-3">
           {footerCols.map((c) => (
             <div key={c.title}>
-              <p className="text-[10px] font-extrabold uppercase tracking-widest text-ink/50 md:text-[11px]">{c.title}</p>
+              <p className="text-xs font-extrabold uppercase tracking-widest text-ink/70">{c.title}</p>
               <ul className="mt-2 space-y-1.5 md:mt-3 md:space-y-2">
                 {c.links.map((l) => (
                   <li key={l.label}>
                     {l.href.startsWith('mailto:') ? (
-                      <a href={l.href} className="text-xs text-ink/80 transition-colors hover:text-flame md:text-sm">{l.label}</a>
+                      <a href={l.href} className={linkClassName}>{l.label}</a>
                     ) : (
-                      <Link to={l.href} onClick={(e) => onLinkClick(e, l.href)} className="text-xs text-ink/80 transition-colors hover:text-flame md:text-sm">{l.label}</Link>
+                      <Link to={routeFor(l.href)} onClick={(e) => onLinkClick(e, l.href)} className={linkClassName}>{l.label}</Link>
                     )}
                   </li>
                 ))}
@@ -86,7 +86,7 @@ export default function Footer() {
         </p>
       </div>
 
-      <p className="mt-8 text-center text-[10px] text-ink/50 md:text-xs">© 2026 Sous. Tous droits réservés.</p>
+      <p className="mt-8 text-center text-xs text-ink/70">© 2026 Sous. Tous droits réservés.</p>
     </footer>
   );
 }

@@ -1,7 +1,7 @@
 import Reveal from './Reveal';
 import Section from './Section';
 import { MaskWords } from './fx';
-import { CheckIcon, EditIcon, MessageIcon, ScribbleCircle } from './doodles';
+import { CheckIcon, EditIcon, GlobeIcon, MessageIcon, ScribbleCircle } from './doodles';
 
 const steps = [
   { 
@@ -23,10 +23,10 @@ const steps = [
     text: 'Vous vérifiez la proposition. Rien n\'est jamais publié sans votre accord explicite.' 
   },
   { 
-    icon: ScribbleCircle, 
+    icon: GlobeIcon,
     num: '04', 
-    title: 'C\'est en ligne instantanément', 
-    text: 'La modification est appliquée sur votre site web et votre QR code en salle.' 
+    title: 'Après validation, tout est à jour',
+    text: 'La modification validée rejoint votre site web et votre QR menu en salle.'
   },
 ];
 
@@ -44,7 +44,7 @@ export default function HowItWorks() {
               <ScribbleCircle className="-inset-x-3 -inset-y-1 h-[calc(100%+8px)] w-[calc(100%+24px)] text-ink/20" />
             </span>
           </h2>
-          <p className="mt-6 font-hand text-2xl text-ink/60">Simple, fiable, et sous votre contrôle.</p>
+          <p className="mt-6 font-hand text-2xl text-ink/75">Simple, fiable, et sous votre contrôle.</p>
         </Reveal>
 
         <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-4 lg:gap-6">
@@ -52,7 +52,7 @@ export default function HowItWorks() {
             <Reveal key={s.num} delay={i * 130} className="relative">
               <span className="pointer-events-none absolute -left-2 -top-10 select-none font-display text-7xl text-ink/10 italic">{s.num}</span>
               <s.icon className="relative h-10 w-10 md:h-12 md:w-12" />
-              <p className="mt-5 flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest text-ink/50">
+              <p className="mt-5 flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-ink/70">
                 <span className="h-1.5 w-1.5 rounded-full bg-flame" /> Étape {s.num}
               </p>
               <h3 className="mt-2 text-base font-bold uppercase tracking-wide md:text-lg">{s.title}</h3>

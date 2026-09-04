@@ -1,16 +1,16 @@
 /** @type {import('tailwindcss').Config} */
 export default {
-  content: ['./index.html', './src/**/*.{js,jsx}'],
+  content: ['./index.html', './src/**/*.{js,jsx,ts,tsx}'],
   theme: {
     extend: {
       colors: {
-        cream: '#F4EFE5',
-        paper: '#FDFAF3',
-        ink: '#171310',
-        coal: '#0E0C0A',
-        flame: '#E4572E',
-        olive: '#CFCAAD',
-        butter: '#EEC461',
+        cream: 'rgb(var(--color-cream-rgb) / <alpha-value>)',
+        paper: 'rgb(var(--color-paper-rgb) / <alpha-value>)',
+        ink: 'rgb(var(--color-ink-rgb) / <alpha-value>)',
+        coal: 'rgb(var(--color-coal-rgb) / <alpha-value>)',
+        flame: 'rgb(var(--color-flame-rgb) / <alpha-value>)',
+        olive: 'rgb(var(--color-olive-rgb) / <alpha-value>)',
+        butter: 'rgb(var(--color-butter-rgb) / <alpha-value>)',
       },
       fontFamily: {
         display: ['Anton', 'Impact', 'sans-serif'],

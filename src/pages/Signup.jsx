@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Children, cloneElement, isValidElement, useId, useState } from 'react';
+import { Link, useSearchParams } from 'react-router-dom';
 import {
   ArrowRightIcon, ArrowLeftIcon, SousMark, CheckIcon, RefreshIcon,
   ChevronDownIcon, PinIcon, GlobeIcon, InstagramIcon, MailIcon, LockIcon,
@@ -9,6 +9,8 @@ import {
 import { Grain } from '../components/fx';
 import Reveal from '../components/Reveal';
 import { IMG } from '../data';
+import { createAccount } from '../lib/clientApi';
+import RestaurantSiteMockup from '../components/RestaurantSiteMockup';
 
 const STEPS = [
   { label: 'Votre restaurant' },
@@ -30,13 +32,26 @@ const inputCls = 'w-full rounded-sm border border-ink/20 bg-paper py-3 pl-4 pr-4
 const inputIconCls = 'w-full rounded-sm border border-ink/20 bg-paper py-3 pl-10 pr-4 text-sm text-ink placeholder:text-ink/35 focus:border-flame focus:outline-none focus:ring-1 focus:ring-flame';
 
 function Field({ label, hint, children }) {
+  const controlId = useId();
+  let connected = false;
+  const connect = (child) => {
+    if (!isValidElement(child)) return child;
+    if (!connected && typeof child.type === 'string' && ['input', 'select', 'textarea'].includes(child.type)) {
+      connected = true;
+      return cloneElement(child, { id: child.props.id ?? controlId });
+    }
+    if (!child.props.children) return child;
+    return cloneElement(child, { children: Children.map(child.props.children, connect) });
+  };
+  const connectedChildren = Children.map(children, connect);
+
   return (
     <div>
       <div className="mb-2 flex items-center justify-between">
-        <label className="block text-sm font-bold text-ink">{label}</label>
+        <label htmlFor={controlId} className="block text-sm font-bold text-ink">{label}</label>
         {hint && <span className="text-xs text-ink/40">{hint}</span>}
       </div>
-      {children}
+      {connectedChildren}
     </div>
   );
 }
@@ -51,20 +66,55 @@ const STYLES = [
   { name: 'Classique', desc: 'Intemporel, raffiné, valeurs traditionnelles.', image: IMG.chef },
 ];
 
+const STYLE_FROM_QUERY = {
+  'mamma-rosa': 'Chaleureux',
+  'knock-knock': 'Audacieux',
+  sora: 'Minimal',
+};
+
 export default function Signup() {
+  const [searchParams] = useSearchParams();
+  const requestedStyle = STYLE_FROM_QUERY[searchParams.get('style')] || 'Chaleureux';
+  const requestedPlan = searchParams.get('plan') || 'essentiel';
   const [step, setStep] = useState(1);
   const [done, setDone] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
+  const [error, setError] = useState('');
   const [form, setForm] = useState({
     restaurantName: '', cuisine: '', address: '', website: '', instagram: '',
     firstName: '', email: '', password: '', phone: '',
     menuImported: false, photosAdded: false, hoursAdded: false,
-    style: 'Chaleureux',
+    style: requestedStyle,
   });
 
   const update = (field, value) => setForm((prev) => ({ ...prev, [field]: value }));
 
-  const next = () => (step < 5 ? setStep(step + 1) : setDone(true));
+  const next = async () => {
+    setError('');
+    if (step === 1 && (!form.restaurantName || !form.cuisine || !form.address)) {
+      setError('Complétez le nom, la cuisine et l’adresse du restaurant.');
+      return;
+    }
+    if (step === 2 && (!form.firstName || !form.email || !form.password || !form.phone)) {
+      setError('Complétez vos coordonnées et choisissez un mot de passe.');
+      return;
+    }
+    if (step < 5) {
+      setStep(step + 1);
+      return;
+    }
+
+    setSubmitting(true);
+    try {
+      await createAccount(form, { plan: requestedPlan });
+      setDone(true);
+    } catch (requestError) {
+      setError(requestError.message || 'Création impossible pour le moment.');
+    } finally {
+      setSubmitting(false);
+    }
+  };
   const back = () => step > 1 && setStep(step - 1);
 
   const previewName = form.restaurantName || 'Mamma Rosa';
@@ -83,10 +133,10 @@ export default function Signup() {
             Sous se met au travail sur le site de {previewName}. Vous recevrez un message dès qu'il sera prêt à valider.
           </p>
           <Link
-            to="/"
+            to="/dashboard"
             className="group mt-8 inline-flex items-center gap-2 rounded-sm bg-flame px-6 py-3.5 text-sm font-bold text-cream transition-colors hover:bg-ink"
           >
-            Retour à l'accueil
+            Ouvrir mon espace
             <ArrowRightIcon className="h-4 w-4 transition-transform group-hover:translate-x-1" />
           </Link>
         </Reveal>
@@ -98,12 +148,18 @@ export default function Signup() {
     <div className="min-h-screen overflow-x-clip bg-cream">
       <Grain />
       <div className="grid min-h-screen lg:grid-cols-[1.05fr_0.95fr]">
-        {/* Left — wizard */}
+        {/* Left , wizard */}
         <div className="px-6 py-8 sm:px-12 lg:px-16 lg:py-12">
-          <Link to="/" className="flex items-center gap-2 font-display text-2xl font-bold tracking-tight text-ink">
-            <SousMark className="h-6 w-auto text-flame" />
-            sous.
-          </Link>
+          <div className="flex items-center justify-between gap-5">
+            <Link to="/" aria-label="Sous, retour à l'accueil" className="flex items-center gap-2 font-display text-2xl font-bold tracking-tight text-ink">
+              <SousMark className="h-6 w-auto text-flame" />
+              sous.
+            </Link>
+            <p className="text-right text-xs text-ink/55 sm:text-sm">
+              Déjà un compte ?{' '}
+              <Link to="/login" className="font-bold text-ink underline decoration-flame decoration-2 underline-offset-4 hover:text-flame">Se connecter</Link>
+            </p>
+          </div>
 
           <Reveal key={step} className="mt-12 max-w-xl lg:mt-16">
             <p className="font-hand text-lg italic text-flame">{COPY[step - 1].eyebrow}</p>
@@ -176,6 +232,14 @@ export default function Signup() {
                       <input value={form.instagram} onChange={(e) => update('instagram', e.target.value)} placeholder="votrecompte" className={inputIconCls} />
                     </div>
                   </Field>
+                  <RestaurantSiteMockup
+                    name={form.restaurantName}
+                    cuisine={form.cuisine}
+                    address={form.address}
+                    website={form.website}
+                    instagram={form.instagram}
+                    className="mt-8 rotate-1 lg:hidden"
+                  />
                 </div>
               )}
 
@@ -257,7 +321,7 @@ export default function Signup() {
                         form.style === s.name ? 'border-flame' : 'border-transparent hover:border-ink/20'
                       }`}
                     >
-                      <img src={s.image} alt={s.name} loading="lazy" className="aspect-[4/3] w-full object-cover" />
+                      <img src={s.image} alt={s.name} loading="lazy" className="aspect-[4/3] w-full object-cover"  decoding="async" />
                       {form.style === s.name && (
                         <span className="absolute right-2 top-2 flex h-6 w-6 items-center justify-center rounded-full bg-flame text-cream">
                           <CheckIcon className="h-3.5 w-3.5" />
@@ -279,8 +343,9 @@ export default function Signup() {
                   {[
                     ['Restaurant', previewName],
                     ['Cuisine', previewCuisine],
-                    ['Adresse', form.address || '—'],
+                    ['Adresse', form.address || ','],
                     ['Direction artistique', form.style],
+                    ['Offre', requestedPlan === 'pro' ? 'Pro, 89 € / mois' : requestedPlan === 'groupe' ? 'Groupe, sur mesure' : 'Essentiel, 49 € / mois'],
                   ].map(([label, value]) => (
                     <div key={label} className="flex items-center justify-between border-b border-ink/10 pb-2 text-sm last:border-0 last:pb-0">
                       <span className="text-ink/50">{label}</span>
@@ -290,20 +355,23 @@ export default function Signup() {
                 </div>
               )}
 
+              {error && <p role="alert" className="mt-5 rounded-sm bg-red-50 px-3 py-2 text-sm text-red-700">{error}</p>}
+
               <div className="mt-8 flex items-center gap-3">
                 {step > 1 && (
-                  <button
+                  <button type="button"
                     onClick={back}
                     className="flex items-center justify-center gap-2 rounded-sm border border-ink/20 px-4 py-3 text-sm font-semibold text-ink/70 transition-colors hover:border-ink hover:text-ink"
                   >
                     <ArrowLeftIcon className="h-4 w-4" />
                   </button>
                 )}
-                <button
+                <button type="button"
                   onClick={next}
+                  disabled={submitting}
                   className="group flex flex-1 items-center justify-center gap-2 rounded-sm bg-flame px-6 py-3.5 text-sm font-bold text-cream transition-colors hover:bg-ink sm:flex-none sm:px-10"
                 >
-                  {step < 5 ? 'Continuer' : 'Créer mon site'}
+                  {submitting ? 'Création…' : step < 5 ? 'Continuer' : 'Créer mon site'}
                   <ArrowRightIcon className="h-4 w-4 transition-transform group-hover:translate-x-1" />
                 </button>
               </div>
@@ -316,28 +384,18 @@ export default function Signup() {
           </div>
         </div>
 
-        {/* Right — live preview */}
-        <div className="hidden flex-col border-l border-ink/10 bg-paper/60 px-10 py-12 lg:flex xl:px-14">
+        {/* Right , live preview */}
+        <div className="hidden flex-col justify-center border-l border-ink/10 bg-paper/60 px-10 py-12 lg:flex xl:px-14">
           <Reveal className="relative">
-            <div className="overflow-hidden rounded-lg border border-ink/10 shadow-photo">
-              <img src={IMG.interior} alt="Aperçu du restaurant" loading="lazy" className="aspect-video w-full object-cover" />
-              <div className="flex items-center justify-between bg-ink px-4 py-3 text-cream">
-                <span className="font-serif text-base italic">{previewName}</span>
-                <span className="text-lg leading-none">≡</span>
-              </div>
-              <div className="bg-paper p-4">
-                <h2 className="font-display text-xl uppercase leading-tight text-ink">
-                  Cuisine {previewCuisine.toLowerCase()}.<br />Chaleureuse.<br />Sans prétention.
-                </h2>
-                <button className="mt-3 inline-flex items-center gap-2 rounded-sm bg-flame px-3 py-2 text-[10px] font-bold uppercase tracking-widest text-cream">
-                  Réserver une table
-                </button>
-              </div>
-            </div>
-
-            <div className="absolute -bottom-8 -right-4 w-32 overflow-hidden rounded-md border-4 border-paper shadow-photo sm:w-40">
-              <img src={IMG.pasta} alt="Plat" loading="lazy" className="aspect-square w-full object-cover" />
-            </div>
+            <p className="mb-5 font-mono text-[9px] font-bold uppercase tracking-[0.2em] text-flame">Votre site prend forme pendant que vous écrivez</p>
+            <RestaurantSiteMockup
+              name={form.restaurantName}
+              cuisine={form.cuisine}
+              address={form.address}
+              website={form.website}
+              instagram={form.instagram}
+              className="-rotate-1"
+            />
           </Reveal>
 
           <div className="mt-16">

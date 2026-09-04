@@ -2,13 +2,13 @@
 //
 // This is the boundary the whole design hangs on. Everything in here may
 // touch the DOM, allocate, take milliseconds and think in pixels. Nothing
-// downstream may do any of those things — the engine's frame functions are
+// downstream may do any of those things , the engine's frame functions are
 // closure-free, allocation-light and `Math`-only so they can run inside a
 // Reanimated worklet on a native UI thread and be diffed numerically
 // against the SwiftUI port.
 //
 // So: bake once (build step, or once per mount, memoised), then hand the
-// result to the engine as inert data. A `LogoPointSet` is JSON — commit it,
+// result to the engine as inert data. A `LogoPointSet` is JSON , commit it,
 // diff it, ship it to a platform that has no SVG renderer at all.
 
 import type { LogoPointSet, LogoStyle, ShellMode } from '../engine/cloud';
@@ -27,7 +27,7 @@ export type LogoSource =
   | { mask: AlphaMask };
 
 export interface BakeOptions {
-  /** Dots to aim for. The single legibility knob — see `recommendedCount`. */
+  /** Dots to aim for. The single legibility knob , see `recommendedCount`. */
   count?: number;
   /** Outline traces the silhouette; fill covers it; both does each. @default 'fill' */
   style?: LogoStyle;
@@ -90,7 +90,7 @@ export async function bakeLogo(source: LogoSource, options: BakeOptions = {}): P
   const m = trimAndCenter(raw, o.resolution, o.margin, o.threshold);
 
   // Contours are needed for the outline styles and, independently, for the
-  // slab shell's side wall — so trace them whenever either asks.
+  // slab shell's side wall , so trace them whenever either asks.
   const needOutline = o.style !== 'fill' || o.shell === 'slab';
   const outlineBudget = o.style === 'both' ? Math.round(o.count * 0.42) : o.count;
   // A contour shorter than ~3 dot-pitches cannot read as a shape; below
@@ -134,7 +134,7 @@ export function serializeLogo(set: LogoPointSet): string {
   });
 }
 
-/** Inverse of `serializeLogo` — the runtime-side half of a build-time bake. */
+/** Inverse of `serializeLogo` , the runtime-side half of a build-time bake. */
 export function deserializeLogo(json: string | Record<string, unknown>): LogoPointSet {
   const raw = (typeof json === 'string' ? JSON.parse(json) : json) as {
     version: number;

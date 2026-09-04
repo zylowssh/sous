@@ -1,7 +1,7 @@
 // Step 2b: alpha mask → an evenly spread point cloud covering the ink.
 //
 // Poisson-disk (Bridson) rather than a jittered grid. A grid keeps its rows
-// no matter how much jitter you add — at logo scale the eye locks onto the
+// no matter how much jitter you add , at logo scale the eye locks onto the
 // lattice and reads a screen-door texture instead of a shape. Blue noise
 // has no such structure, so the dots read as a material and the silhouette
 // stays the only thing with an edge.
@@ -15,7 +15,7 @@ import type { AlphaMask } from './mask';
 import { maskAtF } from './mask';
 import type { Pt } from './contour';
 
-/** mulberry32 — small, fast, well-distributed, and reproducible. */
+/** mulberry32 , small, fast, well-distributed, and reproducible. */
 export function rng(seed: number): () => number {
   let a = seed >>> 0;
   return () => {
@@ -31,7 +31,7 @@ export function rng(seed: number): () => number {
  *
  * `spacing` is the minimum distance between dots in mask pixels. Bridson
  * from a single seed only reaches one connected component, so once the
- * frontier is exhausted we re-seed from any still-uncovered ink pixel —
+ * frontier is exhausted we re-seed from any still-uncovered ink pixel ,
  * without that, a mark made of separate pieces (a dotted "i", a two-part
  * monogram) would bake with everything but the first piece missing.
  */

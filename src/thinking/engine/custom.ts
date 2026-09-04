@@ -1,5 +1,5 @@
 // Custom Sous modes: simmer, swirl, steam. Same contract as the other orb
-// modes — pure arithmetic over (size, t, opts), finished z-sorted frames.
+// modes , pure arithmetic over (size, t, opts), finished z-sorted frames.
 
 import type { Dot, ModeFrame } from './types';
 import { fibDir, finalizeFrame, frac, hashD, makeProj, radiusScale, vnoise } from './core';
@@ -10,7 +10,7 @@ function clamp01(x: number): number {
   return x < 0 ? 0 : x > 1 ? 1 : x;
 }
 
-// --- Simmer: a boiling sphere — frisson --------------------------------
+// --- Simmer: a boiling sphere , frisson --------------------------------
 // A lat/long field breathes under scrolling noise, and bubbles rise from
 // the bottom, swell, and pop near the surface.
 
@@ -73,7 +73,7 @@ export const frameSimmer: ModeFrame = (size, t, o) => {
   return finalizeFrame(dots, [], o.rMin);
 };
 
-// --- Swirl: spiral arms turning around a ghost sphere — tourbillon ------
+// --- Swirl: spiral arms turning around a ghost sphere , tourbillon ------
 // Helical arms wind pole to pole; the radius breathes while the whole
 // armature turns, reading as soup being stirred.
 
@@ -117,7 +117,7 @@ export const frameSwirl: ModeFrame = (size, t, o) => {
   return finalizeFrame(dots, [], o.rMin);
 };
 
-// --- Steam: wisps rising over a faint sphere — vapeur -------------------
+// --- Steam: wisps rising over a faint sphere , vapeur -------------------
 // The sous steam mark as a state: a few dotted strands coil upward, fading
 // at each end, over a dim sphere that never quite surfaces.
 

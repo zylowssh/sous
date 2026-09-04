@@ -1,6 +1,6 @@
 // Optional brand colour, applied at paint time only.
 //
-// The engine's depth cue IS the ink value — a dot's greyness is how far
+// The engine's depth cue IS the ink value , a dot's greyness is how far
 // away it reads. Painting each dot in a flat brand colour destroys that,
 // and the mark collapses into a single-tone silhouette with no volume. So
 // tinting keeps the computed ink value as the *weight* and only replaces
@@ -8,7 +8,7 @@
 // every dot keeps its position on that ramp.
 //
 // This lives in the painter, never in the geometry, so a tinted logo and an
-// untinted one produce identical frames — which is what keeps the native
+// untinted one produce identical frames , which is what keeps the native
 // ports and the golden vectors comparing numbers rather than colours.
 
 import type { OrbFrame } from './core';
@@ -36,7 +36,7 @@ export function parseTint(value: string): Rgb | null {
   return null;
 }
 
-/** Relative luminance in [0, 1], sRGB weights, no gamma — good enough here. */
+/** Relative luminance in [0, 1], sRGB weights, no gamma , good enough here. */
 function luminance(c: Rgb): number {
   return (0.2126 * c.r + 0.7152 * c.g + 0.0722 * c.b) / 255;
 }
@@ -45,7 +45,7 @@ function luminance(c: Rgb): number {
  * Pull a brand colour far enough off the substrate to survive.
  *
  * This is not a nicety. A large share of real logos are specified as pure
- * black — Vercel, Notion, Nike, GitHub, Next.js all are — and painting
+ * black , Vercel, Notion, Nike, GitHub, Next.js all are , and painting
  * black dots on a dark UI renders an invisible component. Refusing to tint
  * is worse (the brand colour silently does nothing); overriding the hue is
  * worse still. Mixing toward the substrate's opposite keeps the hue and
@@ -82,7 +82,7 @@ export function adaptTint(tint: Rgb, dark: boolean): Rgb {
  * `v` is the already-substrate-corrected level: 1 is a near dot at full
  * presence, 0 is a far dot that should recede into the background. On a
  * dark substrate that means scaling the tint down toward black; on a light
- * one, washing it out toward white. Same ramp, mirrored — the identical
+ * one, washing it out toward white. Same ramp, mirrored , the identical
  * relationship the greyscale painter has.
  */
 function ramp(tint: Rgb, v: number, dark: boolean, k = 1): string {

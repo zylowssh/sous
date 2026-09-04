@@ -11,3 +11,7 @@ export const IMG = {
   greens: 'https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&w=900&q=80',
   cafe: 'https://images.unsplash.com/photo-1521017432531-fbd92d768814?auto=format&fit=crop&w=900&q=80',
 };
+
+export const srcSetFor = (src) => [480, 720, 900]
+  .map((width) => `${src.replace(/w=\d+/, `w=${width}`)} ${width}w`)
+  .join(', ');

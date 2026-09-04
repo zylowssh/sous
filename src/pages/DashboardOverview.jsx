@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { DashboardTopbar } from '../components/DashboardLayout';
-import { Card, Button, Sparkline } from '../components/dashboard-ui';
+import { Card, Sparkline } from '../components/dashboard-ui';
 import { GlobeIcon, CalendarIcon, ChartIcon, SparkleIcon, ArrowRightIcon } from '../components/doodles';
 import { UtensilsIcon } from '../components/dashicons';
 import { IMG } from '../data';
@@ -14,9 +14,9 @@ const activities = [
 ];
 
 const agenda = [
-  { time: '11:30', desc: '2 pers. — Déjeuner', status: 'Confirmée' },
-  { time: '13:00', desc: '4 pers. — Déjeuner', status: 'Confirmée' },
-  { time: '20:00', desc: '4 pers. — Dîner', status: 'En attente' },
+  { time: '11:30', desc: '2 pers. , Déjeuner', status: 'Confirmée' },
+  { time: '13:00', desc: '4 pers. , Déjeuner', status: 'Confirmée' },
+  { time: '20:00', desc: '4 pers. , Dîner', status: 'En attente' },
 ];
 
 const integrations = [
@@ -40,16 +40,16 @@ export default function DashboardOverview() {
   return (
     <div className="pb-16">
       <DashboardTopbar
-        title="Bonjour Marco \u{1F44B}"
-        subtitle="Voici ce qui se passe aujourd\u2019hui chez Mamma Rosa."
-        actions={<a href="#" className="hidden items-center gap-2 rounded-sm border border-ink/15 bg-paper px-4 py-2.5 text-sm font-semibold text-ink sm:inline-flex">Voir le site <ArrowRightIcon className="h-4 w-4" /></a>}
+        title="Bonjour Marco 👋"
+        subtitle="Voici ce qui se passe aujourd’hui chez Mamma Rosa."
+        actions={<Link to="/dashboard/site" className="hidden items-center gap-2 rounded-sm border border-ink/15 bg-paper px-4 py-2.5 text-sm font-semibold text-ink sm:inline-flex">Voir le site <ArrowRightIcon className="h-4 w-4" /></Link>}
       />
 
       <div className="grid grid-cols-1 gap-5 px-6 sm:px-10 lg:grid-cols-4">
         <Card>
           <p className="flex items-center gap-2 text-sm font-bold text-ink"><GlobeIcon className="h-4 w-4 text-green-600" /> Site en ligne</p>
           <p className="mt-0.5 text-xs text-green-600">Tout est à jour</p>
-          <img src={IMG.interior} alt="" className="mt-3 aspect-video w-full rounded-md object-cover" />
+          <img src={IMG.interior} alt="" className="mt-3 aspect-video w-full rounded-md object-cover"  decoding="async" loading="lazy" />
           <Link to="/dashboard/site" className="mt-3 flex items-center justify-center gap-2 rounded-sm border border-ink/15 py-2.5 text-xs font-bold text-ink hover:border-ink">Voir le site <ArrowRightIcon className="h-3.5 w-3.5" /></Link>
         </Card>
         <Card>
@@ -102,12 +102,12 @@ export default function DashboardOverview() {
           </div>
           <div className="mt-3 flex flex-wrap gap-2">
             {['Ajouter un plat au menu', 'Publier le menu du brunch', 'Modifier les horaires', 'Mettre à jour le site'].map((s) => (
-              <button key={s} onClick={() => setRequest(s)} className="rounded-full border border-ink/15 bg-paper px-3 py-1.5 text-xs font-semibold text-ink hover:border-flame hover:text-flame">{s}</button>
+              <button type="button" key={s} onClick={() => setRequest(s)} className="rounded-full border border-ink/15 bg-paper px-3 py-1.5 text-xs font-semibold text-ink hover:border-flame hover:text-flame">{s}</button>
             ))}
           </div>
           <div className="mt-4 flex items-center gap-2 rounded-sm border border-ink/15 bg-paper px-3 py-2.5">
-            <input value={request} onChange={(e) => setRequest(e.target.value)} placeholder="Écrivez votre demande..." className="flex-1 bg-transparent text-sm text-ink placeholder:text-ink/35 focus:outline-none" />
-            <Link to="/dashboard/ai" className="flex h-7 w-7 shrink-0 items-center justify-center rounded-sm bg-flame text-cream"><ArrowRightIcon className="h-4 w-4" /></Link>
+            <input aria-label="Demande à Sous" value={request} onChange={(e) => setRequest(e.target.value)} placeholder="Écrivez votre demande..." className="flex-1 bg-transparent text-sm text-ink placeholder:text-ink/35 focus:outline-none" />
+            <Link to="/dashboard/ai" aria-label="Ouvrir Sous AI" className="flex h-7 w-7 shrink-0 items-center justify-center rounded-sm bg-flame text-cream"><ArrowRightIcon className="h-4 w-4" /></Link>
           </div>
         </div>
 
@@ -147,7 +147,7 @@ export default function DashboardOverview() {
           action={
             <div className="flex gap-1 rounded-sm border border-ink/15 p-1">
               {[['7', '7 jours'], ['30', '30 jours'], ['90', '90 jours']].map(([v, l]) => (
-                <button key={v} onClick={() => setRange(v)} className={`rounded-sm px-3 py-1.5 text-xs font-bold ${range === v ? 'bg-flame text-cream' : 'text-ink/50'}`}>{l}</button>
+                <button type="button" key={v} onClick={() => setRange(v)} className={`rounded-sm px-3 py-1.5 text-xs font-bold ${range === v ? 'bg-flame text-cream' : 'text-ink/50'}`}>{l}</button>
               ))}
             </div>
           }

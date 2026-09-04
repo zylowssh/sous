@@ -32,7 +32,7 @@ const LOGO_STATES = [
 const PALETTE = ['#E4572E', '#EEC461', '#CFCAAD', '#FDFAF3', '#8BC0C4', '#A67C52'];
 
 const ICON_PATH = '/brand/sous-icon.svg';
-const LOGO_PATH = '/brand/sous-logo.svg';
+const LOGO_PATH = '/brand/sous-icon.svg';
 
 const svgCache = {};
 async function getSvg(path) {
@@ -338,8 +338,8 @@ export function MonLogo() {
             <div className="flex items-end justify-between gap-4 border-t border-ink/10 pb-1 pt-3">
               <Toggle label="Figé (pause)" checked={paused} onChange={setPaused} />
             </div>
-            <label className="block">
-              <span className="text-[10px] font-extrabold uppercase tracking-widest text-ink/50">Thème</span>
+            <div className="block" role="group" aria-label="Thème">
+              <p className="text-[10px] font-extrabold uppercase tracking-widest text-ink/50">Thème</p>
               <div className="mt-1.5">
                 <Segmented
                   options={[
@@ -351,9 +351,9 @@ export function MonLogo() {
                   onChange={setTheme}
                 />
               </div>
-            </label>
-            <label className="block">
-              <span className="text-[10px] font-extrabold uppercase tracking-widest text-ink/50">Teinte</span>
+            </div>
+            <div className="block" role="group" aria-label="Teinte">
+              <p className="text-[10px] font-extrabold uppercase tracking-widest text-ink/50">Teinte</p>
               <div className="mt-1.5 flex flex-wrap items-center gap-1.5">
                 <button
                   type="button"
@@ -375,7 +375,7 @@ export function MonLogo() {
                   />
                 ))}
               </div>
-            </label>
+            </div>
           </div>
         </div>
 

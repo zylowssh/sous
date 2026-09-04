@@ -1,10 +1,12 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link, NavLink, Outlet, useLocation } from 'react-router-dom';
-import { SousMark, SparkleIcon, CalendarIcon, ImageIcon, ChartIcon, ChevronDownIcon } from './doodles';
+import { SousMark, SparkleIcon, CalendarIcon, ImageIcon, ChartIcon, ChevronDownIcon, MailIcon } from './doodles';
 import {
-  HomeIcon, MonitorIcon, UtensilsIcon, PuzzleIcon, GearIcon, MailIcon, HelpCircleIcon, BellIcon,
+  HomeIcon, MonitorIcon, UtensilsIcon, PuzzleIcon, GearIcon, HelpCircleIcon, BellIcon,
 } from './dashicons';
 import { IMG } from '../data';
+import PageMeta from './PageMeta';
+import { clearSession } from '../lib/clientApi';
 
 const NAV = [
   { to: '/dashboard', label: 'Accueil', icon: HomeIcon, end: true },
@@ -24,6 +26,17 @@ export function DashboardTopbar({ title, subtitle, actions }) {
   const [notifOpen, setNotifOpen] = useState(false);
   const [restoOpen, setRestoOpen] = useState(false);
 
+  useEffect(() => {
+    const closeMenus = (event) => {
+      if (event.key === 'Escape') {
+        setNotifOpen(false);
+        setRestoOpen(false);
+      }
+    };
+    window.addEventListener('keydown', closeMenus);
+    return () => window.removeEventListener('keydown', closeMenus);
+  }, []);
+
   return (
     <header className="flex flex-wrap items-start justify-between gap-4 px-6 pb-6 pt-8 sm:px-10 sm:pt-10">
       <div>
@@ -34,17 +47,20 @@ export function DashboardTopbar({ title, subtitle, actions }) {
         {actions}
         <div className="relative">
           <button
+            type="button"
             onClick={() => setNotifOpen((v) => !v)}
             aria-label="Notifications"
+            aria-expanded={notifOpen}
+            aria-controls="dashboard-notifications"
             className="relative flex h-10 w-10 items-center justify-center rounded-full border border-ink/15 bg-paper text-ink/70 hover:border-ink/30"
           >
             <BellIcon className="h-4 w-4" />
             <span className="absolute -right-1 -top-1 flex h-4 w-4 items-center justify-center rounded-full bg-flame text-[9px] font-bold text-cream">3</span>
           </button>
           {notifOpen && (
-            <div className="absolute right-0 z-20 mt-2 w-72 rounded-md border border-ink/10 bg-paper p-2 shadow-card">
+            <div id="dashboard-notifications" className="absolute right-0 z-20 mt-2 w-72 rounded-md border border-ink/10 bg-paper p-2 shadow-card">
               {[
-                ['Nouvelle réservation', 'Claire Martin — 4 pers., 19:30'],
+                ['Nouvelle réservation', 'Claire Martin, 4 pers., 19:30'],
                 ['Menu synchronisé', 'Depuis Lightspeed POS'],
                 ['Avis client', 'Nouvel avis 5\u2605 sur Google'],
               ].map(([t, d]) => (
@@ -58,16 +74,19 @@ export function DashboardTopbar({ title, subtitle, actions }) {
         </div>
         <div className="relative">
           <button
+            type="button"
             onClick={() => setRestoOpen((v) => !v)}
+            aria-expanded={restoOpen}
+            aria-controls="dashboard-restaurants"
             className="flex items-center gap-2 rounded-sm border border-ink/15 bg-paper px-3.5 py-2.5 text-sm font-semibold text-ink"
           >
             Mamma Rosa <ChevronDownIcon className="h-4 w-4 text-ink/40" />
           </button>
           {restoOpen && (
-            <div className="absolute right-0 z-20 mt-2 w-56 rounded-md border border-ink/10 bg-paper p-2 shadow-card">
+            <div id="dashboard-restaurants" className="absolute right-0 z-20 mt-2 w-56 rounded-md border border-ink/10 bg-paper p-2 shadow-card">
               <p className="px-3 py-1.5 text-[10px] font-bold uppercase tracking-widest text-ink/40">Vos établissements</p>
               <div className="rounded-sm bg-flame/10 px-3 py-2 text-sm font-bold text-flame">Mamma Rosa</div>
-              <button className="mt-1 w-full rounded-sm px-3 py-2 text-left text-sm text-ink/60 hover:bg-cream">+ Ajouter un établissement</button>
+              <button type="button" className="mt-1 w-full rounded-sm px-3 py-2 text-left text-sm text-ink/60 hover:bg-cream">+ Ajouter un établissement</button>
             </div>
           )}
         </div>
@@ -79,11 +98,66 @@ export function DashboardTopbar({ title, subtitle, actions }) {
 export default function DashboardLayout() {
   const location = useLocation();
   const [userMenuOpen, setUserMenuOpen] = useState(false);
+  const [mobileNavOpen, setMobileNavOpen] = useState(false);
+  const current = NAV.find((item) => (
+    item.end ? location.pathname === item.to : location.pathname.startsWith(item.to)
+  ));
+
+  useEffect(() => {
+    setMobileNavOpen(false);
+    setUserMenuOpen(false);
+  }, [location.pathname]);
+
+  useEffect(() => {
+    const close = (event) => {
+      if (event.key === 'Escape') setMobileNavOpen(false);
+    };
+    window.addEventListener('keydown', close);
+    return () => window.removeEventListener('keydown', close);
+  }, []);
 
   return (
-    <div className="flex min-h-screen bg-cream">
-      <aside className="sticky top-0 flex h-screen w-64 shrink-0 flex-col bg-coal px-4 py-6 text-cream">
-        <Link to="/" className="flex items-center gap-2 px-2 font-display text-2xl font-bold tracking-tight">
+    <div className="min-h-screen bg-cream">
+      <PageMeta
+        title={`${current?.label ?? 'Tableau de bord'} | Sous`}
+        description="Gérez votre site, votre menu et vos réservations dans Sous."
+        noIndex
+      />
+      <a href="#dashboard-content" className="sr-only fixed left-4 top-4 z-[120] bg-cream px-4 py-3 font-bold text-ink focus:not-sr-only">
+        Aller au contenu
+      </a>
+
+      <header className="fixed inset-x-0 top-0 z-50 flex h-16 items-center justify-between border-b border-ink/10 bg-cream px-4 lg:hidden">
+        <Link to="/" aria-label="Sous, retour à l'accueil" className="inline-flex items-center gap-2 font-display text-2xl font-bold tracking-tight text-ink">
+          <SousMark className="h-6 w-auto text-flame" />
+          sous.
+        </Link>
+        <button
+          type="button"
+          onClick={() => setMobileNavOpen((open) => !open)}
+          aria-label={mobileNavOpen ? 'Fermer la navigation' : 'Ouvrir la navigation'}
+          aria-expanded={mobileNavOpen}
+          aria-controls="dashboard-sidebar"
+          className="flex h-11 w-11 items-center justify-center border border-ink/20 text-ink"
+        >
+          <span aria-hidden="true" className="text-xl leading-none">{mobileNavOpen ? '×' : '☰'}</span>
+        </button>
+      </header>
+
+      {mobileNavOpen && (
+        <button
+          type="button"
+          aria-label="Fermer la navigation"
+          onClick={() => setMobileNavOpen(false)}
+          className="fixed inset-0 z-40 bg-ink/45 lg:hidden"
+        />
+      )}
+
+      <aside
+        id="dashboard-sidebar"
+        className={`fixed inset-y-0 left-0 z-50 flex h-dvh w-[min(18rem,86vw)] shrink-0 flex-col overflow-y-auto bg-coal px-4 py-6 text-cream transition-transform duration-300 ease-out lg:w-64 lg:translate-x-0 ${mobileNavOpen ? 'translate-x-0' : '-translate-x-full'}`}
+      >
+        <Link to="/" aria-label="Sous, retour à l'accueil" className="flex items-center gap-2 px-2 font-display text-2xl font-bold tracking-tight">
           <SousMark className="h-6 w-auto text-flame" />
           sous.
         </Link>
@@ -115,8 +189,8 @@ export default function DashboardLayout() {
         </div>
 
         <div className="relative mt-4">
-          <button onClick={() => setUserMenuOpen((v) => !v)} className="flex w-full items-center gap-3 rounded-sm px-2 py-2 hover:bg-cream/5">
-            <img src={IMG.chef} alt="" className="h-9 w-9 shrink-0 rounded-full object-cover" />
+          <button type="button" onClick={() => setUserMenuOpen((v) => !v)} aria-expanded={userMenuOpen} aria-controls="dashboard-user-menu" className="flex w-full items-center gap-3 rounded-sm px-2 py-2 hover:bg-cream/5">
+            <img src={IMG.chef} alt="" width="36" height="36" decoding="async" className="h-9 w-9 shrink-0 rounded-full object-cover"  loading="lazy" />
             <div className="flex-1 text-left">
               <p className="text-sm font-bold leading-tight">Mamma Rosa</p>
               <p className="text-xs text-cream/45">Marco</p>
@@ -124,18 +198,18 @@ export default function DashboardLayout() {
             <ChevronDownIcon className="h-4 w-4 text-cream/40" />
           </button>
           {userMenuOpen && (
-            <div className="absolute bottom-full left-0 z-20 mb-2 w-full rounded-md border border-ink/10 bg-paper p-1.5 shadow-card">
+            <div id="dashboard-user-menu" className="absolute bottom-full left-0 z-20 mb-2 w-full rounded-md border border-ink/10 bg-paper p-1.5 shadow-card">
               <Link to="/dashboard/profil" onClick={() => setUserMenuOpen(false)} className="block rounded-sm px-3 py-2 text-sm font-semibold text-ink hover:bg-cream">Mon profil</Link>
               <Link to="/dashboard/parametres" onClick={() => setUserMenuOpen(false)} className="block rounded-sm px-3 py-2 text-sm font-semibold text-ink hover:bg-cream">Paramètres</Link>
-              <Link to="/" onClick={() => setUserMenuOpen(false)} className="block rounded-sm px-3 py-2 text-sm font-semibold text-red-600 hover:bg-cream">Se déconnecter</Link>
+              <Link to="/" onClick={() => { clearSession(); setUserMenuOpen(false); }} className="block rounded-sm px-3 py-2 text-sm font-semibold text-red-600 hover:bg-cream">Se déconnecter</Link>
             </div>
           )}
         </div>
       </aside>
 
-      <div className="flex-1">
+      <main id="dashboard-content" tabIndex={-1} className="min-w-0 pt-16 lg:ml-64 lg:pt-0">
         <Outlet key={location.pathname} />
-      </div>
+      </main>
     </div>
   );
 }

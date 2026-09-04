@@ -25,7 +25,7 @@ export const MODE_FRAMES: Record<ModeKey, ModeFrame> = {
   web: frameWeb,
   braid: frameBraid,
   ribbon: frameRibbon,
-  // ring shares ribbon's geometry — the `faceOn` profile flag switches it
+  // ring shares ribbon's geometry , the `faceOn` profile flag switches it
   ring: frameRibbon,
   morph: frameMorph,
   simmer: frameSimmer,

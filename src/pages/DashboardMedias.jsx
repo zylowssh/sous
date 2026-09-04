@@ -39,7 +39,7 @@ export default function DashboardMedias() {
         subtitle="Gérez toutes les images, logos et documents de votre site."
         actions={
           <>
-            <button className="hidden items-center gap-2 rounded-sm border border-ink/15 bg-paper px-4 py-2.5 text-sm font-semibold text-ink sm:inline-flex"><FolderIcon className="h-4 w-4" /> Nouveau dossier</button>
+            <button type="button" className="hidden items-center gap-2 rounded-sm border border-ink/15 bg-paper px-4 py-2.5 text-sm font-semibold text-ink sm:inline-flex"><FolderIcon className="h-4 w-4" /> Nouveau dossier</button>
             <Button><PlusIcon className="h-4 w-4" /> Ajouter un média</Button>
           </>
         }
@@ -48,7 +48,7 @@ export default function DashboardMedias() {
       <div className="px-6 sm:px-10">
         <div className="flex gap-6 border-b border-ink/10">
           {['Bibliothèque', 'Fichiers du site', 'Logos', 'Documents'].map((t) => (
-            <button key={t} onClick={() => setTab(t)} className={`relative pb-3 text-sm font-semibold ${tab === t ? 'text-flame' : 'text-ink/55'}`}>
+            <button type="button" key={t} onClick={() => setTab(t)} className={`relative pb-3 text-sm font-semibold ${tab === t ? 'text-flame' : 'text-ink/55'}`}>
               {t}
               {tab === t && <span className="absolute inset-x-0 -bottom-px h-0.5 bg-flame" />}
             </button>
@@ -58,24 +58,24 @@ export default function DashboardMedias() {
         <div className="mt-5 flex flex-wrap gap-3">
           <div className="relative flex-1 min-w-[200px]">
             <SearchIcon className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-ink/35" />
-            <input placeholder="Rechercher un média..." className="w-full rounded-sm border border-ink/15 bg-cream py-2.5 pl-9 pr-3 text-sm placeholder:text-ink/35 focus:border-flame focus:outline-none" />
+            <input aria-label="Rechercher un média" placeholder="Rechercher un média..." className="w-full rounded-sm border border-ink/15 bg-cream py-2.5 pl-9 pr-3 text-sm placeholder:text-ink/35 focus:border-flame focus:outline-none" />
           </div>
-          <select className="rounded-sm border border-ink/15 bg-cream px-3 py-2.5 text-sm"><option>Tous les types</option></select>
-          <select className="rounded-sm border border-ink/15 bg-cream px-3 py-2.5 text-sm"><option>Tous les dossiers</option></select>
-          <select className="rounded-sm border border-ink/15 bg-cream px-3 py-2.5 text-sm"><option>Date (récent)</option></select>
-          <button className="flex items-center gap-2 rounded-sm border border-ink/15 px-3 py-2.5 text-sm font-semibold text-ink"><FilterIcon className="h-4 w-4" /> Trier</button>
+          <select aria-label="Filtrer par type" className="rounded-sm border border-ink/15 bg-cream px-3 py-2.5 text-sm"><option>Tous les types</option></select>
+          <select aria-label="Filtrer par dossier" className="rounded-sm border border-ink/15 bg-cream px-3 py-2.5 text-sm"><option>Tous les dossiers</option></select>
+          <select aria-label="Trier les médias" className="rounded-sm border border-ink/15 bg-cream px-3 py-2.5 text-sm"><option>Date (récent)</option></select>
+          <button type="button" className="flex items-center gap-2 rounded-sm border border-ink/15 px-3 py-2.5 text-sm font-semibold text-ink"><FilterIcon className="h-4 w-4" /> Trier</button>
           <div className="flex gap-1 rounded-sm border border-ink/15 p-1">
-            <button onClick={() => setView('grid')} className={`rounded-sm p-1.5 ${view === 'grid' ? 'bg-flame text-cream' : 'text-ink/40'}`}><GridIcon className="h-4 w-4" /></button>
-            <button onClick={() => setView('list')} className={`rounded-sm p-1.5 ${view === 'list' ? 'bg-flame text-cream' : 'text-ink/40'}`}><ListIcon className="h-4 w-4" /></button>
+            <button type="button" onClick={() => setView('grid')} className={`rounded-sm p-1.5 ${view === 'grid' ? 'bg-flame text-cream' : 'text-ink/40'}`}><GridIcon className="h-4 w-4" /></button>
+            <button type="button" onClick={() => setView('list')} className={`rounded-sm p-1.5 ${view === 'list' ? 'bg-flame text-cream' : 'text-ink/40'}`}><ListIcon className="h-4 w-4" /></button>
           </div>
         </div>
 
         <div className="mt-5 grid gap-5 lg:grid-cols-[220px_1fr]">
           <div className="space-y-5">
-            <Card title="Dossiers" action={<button className="text-flame"><PlusIcon className="h-4 w-4" /></button>}>
+            <Card title="Dossiers" action={<button type="button" className="text-flame"><PlusIcon className="h-4 w-4" /></button>}>
               <div className="space-y-0.5">
                 {folders.map(([name, count]) => (
-                  <button
+                  <button type="button"
                     key={name}
                     onClick={() => setActiveFolder(activeFolder === name ? null : name)}
                     className={`flex w-full items-center justify-between rounded-sm px-2.5 py-2 text-sm ${activeFolder === name ? 'bg-flame/10 font-bold text-flame' : 'text-ink/70 hover:bg-cream'}`}
@@ -97,13 +97,13 @@ export default function DashboardMedias() {
           </div>
 
           <div>
-            <p className="mb-3 text-sm font-bold text-ink/50">{media.length} médias{activeFolder ? ` — ${activeFolder}` : ''}</p>
+            <p className="mb-3 text-sm font-bold text-ink/50">{media.length} médias{activeFolder ? ` , ${activeFolder}` : ''}</p>
             {view === 'grid' ? (
               <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-5">
                 {media.map((m) => (
                   <div key={m.name} className="group overflow-hidden rounded-md border border-ink/10 bg-paper">
                     <div className="relative aspect-square">
-                      {m.img && <img src={m.img} alt={m.name} loading="lazy" className="h-full w-full object-cover" />}
+                      {m.img && <img src={m.img} alt={m.name} loading="lazy" className="h-full w-full object-cover"  decoding="async" />}
                       {m.badge && <div className="flex h-full items-center justify-center bg-ink text-cream"><span className="font-display text-sm">MAMMA ROSA</span></div>}
                       {m.file && <div className="flex h-full items-center justify-center bg-cream"><FileTextIcon className="h-8 w-8 text-flame" /></div>}
                       <span className="absolute left-2 top-2 flex h-5 w-5 items-center justify-center rounded-sm bg-paper/90"><ImageIcon className="h-3 w-3 text-ink/50" /></span>
@@ -122,7 +122,7 @@ export default function DashboardMedias() {
               <div className="divide-y divide-ink/10 rounded-md border border-ink/10 bg-paper">
                 {media.map((m) => (
                   <div key={m.name} className="flex items-center gap-3 px-4 py-2.5">
-                    {m.img && <img src={m.img} alt="" className="h-9 w-9 rounded-sm object-cover" />}
+                    {m.img && <img src={m.img} alt="" className="h-9 w-9 rounded-sm object-cover"  decoding="async" loading="lazy" />}
                     {m.file && <FileTextIcon className="h-9 w-9 text-flame" />}
                     {m.badge && <div className="flex h-9 w-9 items-center justify-center rounded-sm bg-ink"><span className="text-[7px] font-display text-cream">LOGO</span></div>}
                     <p className="flex-1 text-sm font-semibold text-ink">{m.name}</p>
@@ -136,10 +136,10 @@ export default function DashboardMedias() {
             <div className="mt-6 flex items-center justify-between">
               <div className="flex items-center gap-1">
                 {['<', '1', '2', '3', '...', '7', '>'].map((p, i) => (
-                  <button key={i} className={`flex h-8 w-8 items-center justify-center rounded-sm text-sm ${p === '1' ? 'bg-flame text-cream' : 'text-ink/50 hover:bg-cream'}`}>{p}</button>
+                  <button type="button" key={i} className={`flex h-8 w-8 items-center justify-center rounded-sm text-sm ${p === '1' ? 'bg-flame text-cream' : 'text-ink/50 hover:bg-cream'}`}>{p}</button>
                 ))}
               </div>
-              <select className="rounded-sm border border-ink/15 bg-cream px-3 py-1.5 text-xs"><option>18 par page</option></select>
+              <select aria-label="Résultats par page" className="rounded-sm border border-ink/15 bg-cream px-3 py-1.5 text-xs"><option>18 par page</option></select>
             </div>
           </div>
         </div>

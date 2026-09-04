@@ -1,5 +1,5 @@
 // Shared primitives for the dotted 3D thought-orbs. Ported from inkform
-// (PlotterLab's HalftoneSphere lineage): honestly 3D — rotated,
+// (PlotterLab's HalftoneSphere lineage): honestly 3D , rotated,
 // depth-shaded, z-sorted. Depth is carried by dot size and ink weight
 // alone. Plain 2D canvas fills only: no ctx.filter, no SVG filters, so
 // every mode renders identically in Chrome, Safari and Firefox.
@@ -19,7 +19,7 @@ export interface Dot {
    * It exists so a state can say something with colour that it cannot say
    * with position: in `working`, a carrier in transit is grey cargo and
    * gains the brand's colour as it seats into the mark. Untinted renders
-   * ignore it entirely — greyscale blended toward greyscale is greyscale —
+   * ignore it entirely , greyscale blended toward greyscale is greyscale ,
    * which keeps the geometry identical either way.
    */
   k?: number;
@@ -58,7 +58,7 @@ export function frac(x: number): number {
   return x - Math.floor(x);
 }
 
-/** Value noise on a 2D lattice — smooth, deterministic, cheap. */
+/** Value noise on a 2D lattice , smooth, deterministic, cheap. */
 export function vnoise(x: number, y: number): number {
   const xi = Math.floor(x);
   const yi = Math.floor(y);
@@ -110,7 +110,7 @@ export function makeProj(yaw: number, tilt: number, cx: number, cy: number, scal
 
 /**
  * Painter: z-sort far→near, matte grayscale dots. On dark substrates the
- * ink value is mirrored (1 - white) so near dots read bright — the same
+ * ink value is mirrored (1 - white) so near dots read bright , the same
  * depth language on an inverted substrate.
  */
 export function paint(ctx: CanvasRenderingContext2D, dots: Dot[], dark: boolean, rMin = 0.3): void {
@@ -120,7 +120,7 @@ export function paint(ctx: CanvasRenderingContext2D, dots: Dot[], dark: boolean,
     const g = Math.round((dark ? 1 - w : w) * 255);
     ctx.fillStyle = `rgba(${g},${g},${g},${alpha})`;
     ctx.beginPath();
-    ctx.arc(d.x, d.y, d.r, 0, Math.PI * 2);
+    ctx.arc(d.x, d.y, Math.max(rMin, d.r), 0, Math.PI * 2);
     ctx.fill();
   }
 }
@@ -147,7 +147,7 @@ export function paintLines(ctx: CanvasRenderingContext2D, lines: Line[], dark: b
  * This runs in the GEOMETRY step, not the painter, so a frame is a complete
  * set of draw instructions: every value is final and the array order is the
  * order to draw in. That is what lets the RN and SwiftUI ports share this
- * output verbatim — a port draws the list, it never re-derives anything —
+ * output verbatim , a port draws the list, it never re-derives anything ,
  * and what lets the golden-vector tests compare numbers instead of pixels.
  */
 export function finalizeFrame(dots: Dot[], lines: Line[], rMin = 0.3): OrbFrame {

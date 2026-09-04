@@ -1,7 +1,8 @@
 import { useState } from 'react';
 import { DashboardTopbar } from '../components/DashboardLayout';
-import { Card, Button } from '../components/dashboard-ui';
+import { Button } from '../components/dashboard-ui';
 import { LightbulbIcon } from '../components/dashicons';
+import usePersistentState from '../hooks/usePersistentState';
 
 const CATS = ['Toutes', 'Réservations', 'Marketing', 'Communication', 'Paiement', 'Comptabilité', 'Autres'];
 
@@ -16,7 +17,7 @@ const integrations = [
 
 export default function DashboardIntegrations() {
   const [cat, setCat] = useState('Toutes');
-  const [state, setState] = useState(Object.fromEntries(integrations.map((i) => [i.name, i.connected])));
+  const [state, setState] = usePersistentState('integrations', () => Object.fromEntries(integrations.map((i) => [i.name, i.connected])));
 
   return (
     <div className="pb-16">
@@ -25,7 +26,7 @@ export default function DashboardIntegrations() {
       <div className="px-6 sm:px-10">
         <div className="flex flex-wrap gap-6 border-b border-ink/10">
           {CATS.map((c) => (
-            <button key={c} onClick={() => setCat(c)} className={`relative pb-3 text-sm font-semibold ${cat === c ? 'text-flame' : 'text-ink/55'}`}>
+            <button type="button" key={c} onClick={() => setCat(c)} className={`relative pb-3 text-sm font-semibold ${cat === c ? 'text-flame' : 'text-ink/55'}`}>
               {c}
               {cat === c && <span className="absolute inset-x-0 -bottom-px h-0.5 bg-flame" />}
             </button>

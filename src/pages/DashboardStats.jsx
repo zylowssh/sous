@@ -47,8 +47,8 @@ export default function DashboardStats() {
         subtitle="Suivez les performances de votre restaurant en ligne."
         actions={
           <>
-            <select className="hidden rounded-sm border border-ink/15 bg-paper px-3 py-2.5 text-sm font-semibold sm:block"><option>1 – 7 mai 2024</option></select>
-            <select className="hidden rounded-sm border border-ink/15 bg-paper px-3 py-2.5 text-sm font-semibold lg:block"><option>Comparé à 24 – 30 avr.</option></select>
+            <select aria-label="Période analysée" className="hidden rounded-sm border border-ink/15 bg-paper px-3 py-2.5 text-sm font-semibold sm:block"><option>1 – 7 mai 2024</option></select>
+            <select aria-label="Période de comparaison" className="hidden rounded-sm border border-ink/15 bg-paper px-3 py-2.5 text-sm font-semibold lg:block"><option>Comparé à 24 – 30 avr.</option></select>
             <Button variant="outline" className="text-sm"><DownloadIcon className="h-4 w-4" /> Exporter le rapport</Button>
           </>
         }
@@ -57,7 +57,7 @@ export default function DashboardStats() {
       <div className="px-6 sm:px-10">
         <div className="flex flex-wrap gap-6 border-b border-ink/10">
           {TABS.map((t) => (
-            <button key={t} onClick={() => setTab(t)} className={`relative pb-3 text-sm font-semibold ${tab === t ? 'text-flame' : 'text-ink/55'}`}>
+            <button type="button" key={t} onClick={() => setTab(t)} className={`relative pb-3 text-sm font-semibold ${tab === t ? 'text-flame' : 'text-ink/55'}`}>
               {t}
               {tab === t && <span className="absolute inset-x-0 -bottom-px h-0.5 bg-flame" />}
             </button>
@@ -96,7 +96,7 @@ export default function DashboardStats() {
                 ))}
               </div>
             </div>
-            <button className="mt-3 flex items-center gap-1 text-xs font-bold text-flame">Voir le détail <ArrowRightIcon className="h-3 w-3" /></button>
+            <button type="button" className="mt-3 flex items-center gap-1 text-xs font-bold text-flame">Voir le détail <ArrowRightIcon className="h-3 w-3" /></button>
           </Card>
 
           <Card title="Appareils">
@@ -112,7 +112,7 @@ export default function DashboardStats() {
                 ))}
               </div>
             </div>
-            <button className="mt-3 flex items-center gap-1 text-xs font-bold text-flame">Voir le détail <ArrowRightIcon className="h-3 w-3" /></button>
+            <button type="button" className="mt-3 flex items-center gap-1 text-xs font-bold text-flame">Voir le détail <ArrowRightIcon className="h-3 w-3" /></button>
           </Card>
         </div>
 
@@ -122,20 +122,20 @@ export default function DashboardStats() {
               {topDishes.map(([name, views, img], i) => (
                 <div key={name} className="flex items-center gap-3">
                   <span className="w-4 text-sm font-bold text-ink/40">{i + 1}</span>
-                  <img src={img} alt="" className="h-8 w-8 rounded-sm object-cover" />
+                  <img src={img} alt="" className="h-8 w-8 rounded-sm object-cover"  decoding="async" loading="lazy" />
                   <span className="flex-1 text-sm font-semibold text-ink">{name}</span>
                   <span className="text-xs text-ink/45">{views}</span>
                 </div>
               ))}
             </div>
-            <button className="mt-3 flex items-center gap-1 text-xs font-bold text-flame">Voir tous les plats <ArrowRightIcon className="h-3 w-3" /></button>
+            <button type="button" className="mt-3 flex items-center gap-1 text-xs font-bold text-flame">Voir tous les plats <ArrowRightIcon className="h-3 w-3" /></button>
           </Card>
 
-          <Card title="Réservations par jour" action={<button className="flex items-center gap-1 text-xs font-bold text-flame">Voir le détail <ArrowRightIcon className="h-3 w-3" /></button>}>
+          <Card title="Réservations par jour" action={<button type="button" className="flex items-center gap-1 text-xs font-bold text-flame">Voir le détail <ArrowRightIcon className="h-3 w-3" /></button>}>
             <BarChart values={[3, 5, 7, 4, 12, 3, 2]} labels={['1 mai', '2 mai', '3 mai', '4 mai', '5 mai', '6 mai', '7 mai']} />
           </Card>
 
-          <Card title="Taux de conversion" action={<button className="flex items-center gap-1 text-xs font-bold text-flame">Voir le détail <ArrowRightIcon className="h-3 w-3" /></button>}>
+          <Card title="Taux de conversion" action={<button type="button" className="flex items-center gap-1 text-xs font-bold text-flame">Voir le détail <ArrowRightIcon className="h-3 w-3" /></button>}>
             <p className="text-xs text-ink/50">Visites → Réservations</p>
             <p className="mt-1 flex items-baseline gap-2"><span className="font-display text-2xl text-ink">3,2 %</span><span className="text-xs font-bold text-green-600">+0,9 pt</span></p>
             <p className="text-xs text-ink/40">vs 24 – 30 avr.</p>

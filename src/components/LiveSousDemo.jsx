@@ -171,13 +171,13 @@ export default function LiveSousDemo() {
                     alt=""
                     loading="lazy"
                     className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-700 ${updated ? 'opacity-0' : 'opacity-100'}`}
-                  />
+                   decoding="async" />
                   <img
                     src={IMG.pasta}
                     alt=""
                     loading="lazy"
                     className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-700 ${updated ? 'opacity-100' : 'opacity-0'}`}
-                  />
+                   decoding="async" />
                 </div>
                 <p className={`font-display text-2xl transition-colors duration-500 ${updated ? 'text-flame' : 'text-ink'}`}>
                   {updated ? '24 €' : '22 €'}

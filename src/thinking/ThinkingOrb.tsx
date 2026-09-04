@@ -6,8 +6,7 @@
 
 import { useEffect, useRef } from 'react';
 import { paintFrame } from './engine/core';
-import { MODE_DRAWS, MODE_FRAMES } from './engine/registry';
-import type { ModeOpts } from './engine/profiles';
+import { MODE_FRAMES } from './engine/registry';
 import { adaptTint, paintFrameTinted, parseTint } from './engine/tint';
 import { resolvePreset } from './presets';
 import { useReducedMotion, useResolvedDark } from './theme';
@@ -54,7 +53,6 @@ export function ThinkingOrb({
     if (!ctx) return;
 
     const { mode, speed: baseSpeed, opts } = resolvePreset(state, size);
-    const draw = MODE_DRAWS[mode];
     const effSpeed = baseSpeed * speed;
     const parsed = tint ? parseTint(tint) : null;
     const rgb = parsed ? adaptTint(parsed, dark) : null;
@@ -92,7 +90,7 @@ export function ThinkingOrb({
     // draw at least one frame even when paused/offscreen
     frame((performance.now() / 1000) * effSpeed);
 
-    // pause offscreen + on hidden tabs — free when not visible
+    // pause offscreen + on hidden tabs , free when not visible
     let visible = true;
     const io =
       typeof IntersectionObserver !== 'undefined'

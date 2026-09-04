@@ -1,10 +1,14 @@
+/* eslint-disable react-refresh/only-export-components */
 import { useEffect, useRef, useState } from 'react';
 
 export const MaskWords = ({ text, step = 70, start = 0, className = '' }) => (
   <span className={className}>
     {text.split(' ').map((w, i) => (
-      <span key={i} className="mask-line mr-[0.28em] last:mr-0">
-        <span style={{ '--wd': `${start + i * step}ms` }}>{w}</span>
+      <span key={`${w}-${i}`}>
+        {i > 0 ? ' ' : null}
+        <span className="mask-line">
+          <span style={{ '--wd': `${start + i * step}ms` }}>{w}</span>
+        </span>
       </span>
     ))}
   </span>
@@ -79,7 +83,11 @@ const SECTIONS = [
   { id: 'menu', label: 'Menu' },
   { id: 'testimonial', label: 'Témoignage' },
   { id: 'pricing', label: 'Tarifs' },
+  { id: 'faq', label: 'FAQ' },
+  { id: 'help', label: 'Aide' },
 ];
+
+const DARK_SECTIONS = ['tell', 'testimonial'];
 
 // Shared with useStackSnap below so the magnet-snap logic never fights a
 // user-triggered scroll (e.g. clicking a dot) mid-animation.
@@ -88,7 +96,7 @@ let programmaticNavTimer = 0;
 
 // True document-flow offset of an element inside <main>. On desktop every
 // section is sticky and pins at top:0, so getBoundingClientRect() reports 0
-// for ALL sections already scrolled past — which made backward dot-nav clicks
+// for ALL sections already scrolled past , which made backward dot-nav clicks
 // scroll nowhere. Walking main's children by layout height (offsetHeight is
 // immune to sticky pinning and to the scale transform) gives the real,
 // stable anchor of each section.
@@ -123,47 +131,110 @@ export function goToSection(id) {
   }, 900);
 }
 
-export function DotsNav() {
-  const [active, setActive] = useState('top');
+export function DotsNav({
+  sections = SECTIONS,
+  darkSectionIds = DARK_SECTIONS,
+  appearance = 'standard',
+  ariaLabel = 'Navigation entre les sections',
+}) {
+  const [active, setActive] = useState(sections[0]?.id ?? '');
 
   useEffect(() => {
-    const obs = new IntersectionObserver(
-      (entries) => entries.forEach((e) => e.isIntersecting && setActive(e.target.id)),
-      { rootMargin: '-45% 0px -45% 0px' }
-    );
+    setActive(sections[0]?.id ?? '');
+  }, [sections]);
 
-    SECTIONS.forEach((s) => {
-      const el = document.getElementById(s.id);
-      if (el) obs.observe(el);
-    });
+  useEffect(() => {
+    let raf = 0;
 
-    return () => obs.disconnect();
-  }, []);
+    const update = () => {
+      raf = 0;
+      const marker = window.scrollY + window.innerHeight * 0.45;
+      let current = sections[0]?.id ?? '';
+
+      for (const section of sections) {
+        const el = document.getElementById(section.id);
+        if (!el) continue;
+        if (anchorInMain(el) <= marker) current = section.id;
+        else break;
+      }
+
+      setActive((previous) => (previous === current ? previous : current));
+    };
+
+    const onScroll = () => {
+      if (!raf) raf = requestAnimationFrame(update);
+    };
+
+    update();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', onScroll);
+
+    return () => {
+      window.removeEventListener('scroll', onScroll);
+      window.removeEventListener('resize', onScroll);
+      if (raf) cancelAnimationFrame(raf);
+    };
+  }, [sections]);
 
   // Explicit colors instead of mix-blend-difference: difference turned the
   // dots cyan over the flame section. Ink reads on every light section,
   // white on the dark ones (tell, testimonial).
-  const dark = active === 'tell' || active === 'testimonial';
+  const dark = darkSectionIds.includes(active);
+  const compact = appearance === 'compact';
 
   return (
-    <nav className="fixed right-5 top-1/2 z-40 hidden -translate-y-1/2 flex-col items-end gap-3 lg:flex">
-      {SECTIONS.map((s) => {
+    <nav
+      className={`fixed top-1/2 z-40 hidden -translate-y-1/2 flex-col items-end lg:flex ${compact ? 'right-5 gap-3' : 'right-4 gap-1.5'}`}
+      aria-label={ariaLabel}
+    >
+      {sections.map((s) => {
         const isActive = active === s.id;
+
+        if (compact) {
+          return (
+            <button
+              key={s.id}
+              type="button"
+              aria-label={s.label}
+              aria-current={isActive ? 'page' : undefined}
+              onClick={() => goToSection(s.id)}
+              className={`group relative flex items-center justify-end rounded-full transition-all duration-300 ease-out hover:scale-110 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-flame ${
+                isActive
+                  ? `h-2.5 w-7 ${dark ? 'bg-cream' : 'bg-ink'}`
+                  : `h-2.5 w-2.5 hover:w-7 ${dark ? 'bg-cream/40 hover:bg-cream/80' : 'bg-ink/30 hover:bg-ink/70'}`
+              }`}
+            >
+              <span
+                className={`pointer-events-none absolute right-8 translate-x-2 whitespace-nowrap text-[10px] font-bold uppercase tracking-widest opacity-0 transition-[opacity,transform] duration-300 group-hover:translate-x-0 group-hover:opacity-100 group-focus-visible:translate-x-0 group-focus-visible:opacity-100 ${
+                  dark ? 'text-cream' : 'text-ink'
+                }`}
+              >
+                {s.label}
+              </span>
+            </button>
+          );
+        }
+
         return (
           <button
             key={s.id}
+            type="button"
             aria-label={s.label}
-            aria-current={isActive ? 'true' : undefined}
+            aria-current={isActive ? 'page' : undefined}
             onClick={() => goToSection(s.id)}
-            className={`group relative flex items-center justify-end rounded-full transition-all duration-300 ease-out hover:scale-110 ${
-              isActive
-                ? `h-2.5 w-7 ${dark ? 'bg-white' : 'bg-ink'}`
-                : `h-2.5 w-2.5 hover:w-7 ${dark ? 'bg-white/40 hover:bg-white/80' : 'bg-ink/30 hover:bg-ink/70'}`
-            }`}
+            className="group relative flex h-8 w-8 items-center justify-end rounded-full focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-flame"
           >
             <span
-              className={`pointer-events-none absolute right-8 whitespace-nowrap text-[10px] font-bold uppercase tracking-widest opacity-0 transition-all duration-300 translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 ${
-                dark ? 'text-white' : 'text-ink'
+              aria-hidden="true"
+              className={`block h-2.5 w-7 origin-right rounded-full transition-[transform,background-color] duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] ${
+                isActive
+                  ? `scale-x-100 ${dark ? 'bg-cream' : 'bg-ink'}`
+                  : `scale-x-[0.36] group-hover:scale-x-[0.58] group-focus-visible:scale-x-[0.58] ${dark ? 'bg-cream/60 group-hover:bg-cream' : 'bg-ink/40 group-hover:bg-ink'}`
+              }`}
+            />
+            <span
+              className={`pointer-events-none absolute right-10 translate-x-2 whitespace-nowrap rounded-sm px-2.5 py-1.5 text-xs font-bold uppercase tracking-widest opacity-0 shadow-card transition-[opacity,transform] duration-300 ease-out group-hover:translate-x-0 group-hover:opacity-100 group-focus-visible:translate-x-0 group-focus-visible:opacity-100 ${
+                dark ? 'bg-cream text-ink' : 'bg-ink text-cream'
               }`}
             >
               {s.label}

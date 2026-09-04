@@ -2,7 +2,7 @@ import { useState, useRef, useEffect, useCallback } from 'react';
 import Reveal from './Reveal';
 import Section from './Section';
 import { MaskWords } from './fx';
-import { IMG } from '../data';
+import { IMG, srcSetFor } from '../data';
 import { AsteriskIcon, ArrowLeftIcon, ArrowRightIcon } from './doodles';
 
 function DragHandle({ className = '', active = false }) {
@@ -24,7 +24,7 @@ function GenericSite() {
     <div className="absolute inset-0 overflow-hidden rounded-lg border border-ink/10 bg-paper p-4 sm:p-6 md:p-10">
       <div className="flex items-center justify-between">
         <span className="font-serif text-base text-ink sm:text-xl">Le Bon Restaurant</span>
-        <div className="hidden gap-6 text-xs font-medium text-ink/60 sm:flex">
+        <div className="hidden gap-6 text-xs font-medium text-ink/75 sm:flex">
           <span>Accueil</span>
           <span>À propos</span>
           <span>Menu</span>
@@ -32,25 +32,33 @@ function GenericSite() {
         </div>
       </div>
       <div className="mt-4 sm:mt-8">
-        <p className="font-serif text-xs font-semibold uppercase tracking-wider text-ink/60 sm:text-sm">Bienvenue chez nous</p>
+        <p className="font-serif text-xs font-semibold uppercase tracking-wider text-ink/75 sm:text-sm">Bienvenue chez nous</p>
         <h2 className="mt-2 font-serif text-2xl text-ink sm:text-4xl md:text-5xl">Le Bon Restaurant</h2>
         <p className="mt-2 max-w-md font-serif text-sm text-ink/70 sm:mt-4 sm:text-base">
           Nous proposons de délicieux plats préparés avec les meilleurs ingrédients frais et locaux.
         </p>
-        <a href="#" className="mt-3 inline-block rounded-sm border-2 border-ink/30 px-4 py-2 text-[10px] font-bold uppercase tracking-widest text-ink/80 transition-colors hover:bg-ink/5 sm:mt-6 sm:px-5 sm:py-2.5 sm:text-xs">
+        <span aria-hidden="true" className="mt-3 inline-block rounded-sm border-2 border-ink/30 px-4 py-2 text-xs font-bold uppercase tracking-widest text-ink/80 sm:mt-6 sm:px-5 sm:py-2.5">
           Voir le menu
-        </a>
+        </span>
       </div>
       <div className="mt-4 overflow-hidden rounded-md sm:mt-8">
-        <img src={IMG.interior} alt="Salle de restaurant" loading="lazy" className="kenburns aspect-[21/9] w-full object-cover grayscale opacity-80 sm:aspect-video" />
+        <img
+          src={IMG.interior}
+          srcSet={srcSetFor(IMG.interior)}
+          sizes="(min-width: 1024px) 54vw, calc(100vw - 3rem)"
+          alt="Salle de restaurant aux tables dressées"
+          loading="lazy"
+          decoding="async"
+          className="aspect-[21/9] w-full object-cover grayscale opacity-80 sm:aspect-video"
+         />
       </div>
       <div className="mt-4 hidden grid-cols-2 gap-4 sm:mt-6 sm:grid">
         <div>
-          <p className="font-serif text-xs font-semibold text-ink/60">Horaires</p>
+          <p className="font-serif text-xs font-semibold text-ink/75">Horaires</p>
           <p className="mt-1 font-serif text-sm text-ink/70">Mar-Dim: 12h-22h</p>
         </div>
         <div>
-          <p className="font-serif text-xs font-semibold text-ink/60">Contact</p>
+          <p className="font-serif text-xs font-semibold text-ink/75">Contact</p>
           <p className="mt-1 font-serif text-sm text-ink/70">01 23 45 67 89</p>
         </div>
       </div>
@@ -64,7 +72,7 @@ function SousSite() {
     <div className="absolute inset-0 overflow-hidden rounded-lg border-2 border-ink bg-coal p-4 text-cream shadow-card sm:p-6 md:p-10">
       <div className="flex items-center justify-between">
         <span className="font-display text-base italic sm:text-xl">Rumor</span>
-        <div className="hidden gap-4 text-[10px] font-bold uppercase tracking-widest sm:flex">
+        <div className="hidden gap-4 text-xs font-bold uppercase tracking-widest sm:flex">
           <span>Menu</span>
           <span>À propos</span>
           <span className="bg-flame px-2 py-1">Réserver</span>
@@ -78,17 +86,25 @@ function SousSite() {
         <p className="mt-2 max-w-md text-xs text-cream/70 sm:mt-4 sm:text-sm">
           Une expérience culinaire unique. Plats signatures, cocktails artisanaux, ambiance chaleureuse.
         </p>
-        <a href="#" className="mt-3 inline-flex items-center gap-2 border border-cream/60 px-4 py-2 text-[10px] font-bold uppercase tracking-widest transition-colors hover:bg-cream hover:text-ink sm:mt-6 sm:px-5 sm:py-2.5 sm:text-[11px]">
+        <span aria-hidden="true" className="mt-3 inline-flex items-center gap-2 border border-cream/70 px-4 py-2 text-xs font-bold uppercase tracking-widest sm:mt-6 sm:px-5 sm:py-2.5">
           Voir la carte
           <ArrowRightIcon className="h-3 w-3" />
-        </a>
+        </span>
       </div>
       <div className="mt-4 overflow-hidden rounded-md sm:mt-8">
-        <img src={IMG.burger} alt="Brunch" loading="lazy" className="kenburns aspect-[21/9] w-full object-cover sm:aspect-video" />
+        <img
+          src={IMG.burger}
+          srcSet={srcSetFor(IMG.burger)}
+          sizes="(min-width: 1024px) 54vw, calc(100vw - 3rem)"
+          alt="Burger de brunch servi avec des frites"
+          loading="lazy"
+          decoding="async"
+          className="aspect-[21/9] w-full object-cover sm:aspect-video"
+         />
       </div>
       <div className="mt-4 hidden items-center gap-3 sm:mt-6 sm:flex">
         <div className="h-2 w-2 rounded-full bg-flame"></div>
-        <p className="text-[10px] font-bold uppercase tracking-widest text-cream/60">En ligne en 1 min</p>
+        <p className="text-xs font-bold uppercase tracking-widest text-cream/80">En ligne après validation</p>
       </div>
     </div>
   );
@@ -101,7 +117,7 @@ export default function TemplateSection() {
 
   // Target = where the pointer wants the divider. Current = what's on screen.
   // A small rAF loop eases current toward target every frame, so dragging
-  // feels snappy (tracks the finger closely) without ever visually "jumping" —
+  // feels snappy (tracks the finger closely) without ever visually "jumping" ,
   // and releasing settles smoothly into place instead of stopping dead.
   const targetRef = useRef(50);
   const currentRef = useRef(50);
@@ -200,14 +216,6 @@ export default function TemplateSection() {
           {/* Interactive slider */}
           <Reveal delay={150}>
             <div className="relative">
-              {/* Labels integrated into slider */}
-              <div className="absolute -top-6 left-0 z-10 text-[10px] font-bold uppercase tracking-widest text-ink/50 sm:-top-8 sm:text-xs">
-                Avant — Site générique
-              </div>
-              <div className="absolute -top-6 right-0 z-10 text-[10px] font-bold uppercase tracking-widest text-ink/50 sm:-top-8 sm:text-xs">
-                Après — Par Sous
-              </div>
-
               {/* Slider container */}
               <div
                 ref={containerRef}
@@ -253,7 +261,7 @@ export default function TemplateSection() {
               </div>
 
               {/* Glissez cue */}
-              <div className="mt-4 text-center text-xs font-bold uppercase tracking-widest text-ink/40">
+              <div className="mt-4 text-center text-xs font-bold uppercase tracking-widest text-ink/70">
                 ← Glissez →
               </div>
             </div>

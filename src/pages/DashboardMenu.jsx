@@ -1,9 +1,10 @@
 import { useState } from 'react';
 import { DashboardTopbar } from '../components/DashboardLayout';
 import { Card, Button, Badge, Field, inputCls, Toggle } from '../components/dashboard-ui';
-import { ChevronDownIcon } from '../components/doodles';
-import { SearchIcon, UploadIcon, PlusIcon, MoreHIcon, GripIcon, CameraIcon } from '../components/dashicons';
+import { ChevronDownIcon, UploadIcon } from '../components/doodles';
+import { SearchIcon, PlusIcon, MoreHIcon, GripIcon, CameraIcon } from '../components/dashicons';
 import { IMG } from '../data';
+import usePersistentState from '../hooks/usePersistentState';
 
 const categories = [
   { name: 'Antipasti', count: 8 },
@@ -28,9 +29,9 @@ const dishes = [
 export default function DashboardMenu() {
   const [tab, setTab] = useState('Plats');
   const [activeCat, setActiveCat] = useState('Pâtes');
-  const [selected, setSelected] = useState(dishes[1]);
-  const [available, setAvailable] = useState(true);
-  const [onSite, setOnSite] = useState(true);
+  const [selected, setSelected] = usePersistentState('menu-selected-dish', dishes[1]);
+  const [available, setAvailable] = usePersistentState('menu-available', true);
+  const [onSite, setOnSite] = usePersistentState('menu-delivery', true);
 
   return (
     <div className="pb-16">
@@ -39,7 +40,7 @@ export default function DashboardMenu() {
         subtitle="Gérez vos plats, prix et disponibilités."
         actions={
           <>
-            <button className="hidden items-center gap-2 rounded-sm border border-ink/15 bg-paper px-4 py-2.5 text-sm font-semibold text-ink sm:inline-flex">
+            <button type="button" className="hidden items-center gap-2 rounded-sm border border-ink/15 bg-paper px-4 py-2.5 text-sm font-semibold text-ink sm:inline-flex">
               <UploadIcon className="h-4 w-4" /> Importer depuis le POS
             </button>
             <Button><PlusIcon className="h-4 w-4" /> Ajouter un plat</Button>
@@ -50,7 +51,7 @@ export default function DashboardMenu() {
       <div className="px-6 sm:px-10">
         <div className="flex gap-6 border-b border-ink/10">
           {['Plats', 'Catégories', 'Extras', 'Menus spéciaux'].map((t) => (
-            <button key={t} onClick={() => setTab(t)} className={`relative pb-3 text-sm font-semibold ${tab === t ? 'text-flame' : 'text-ink/55'}`}>
+            <button type="button" key={t} onClick={() => setTab(t)} className={`relative pb-3 text-sm font-semibold ${tab === t ? 'text-flame' : 'text-ink/55'}`}>
               {t}
               {tab === t && <span className="absolute inset-x-0 -bottom-px h-0.5 bg-flame" />}
             </button>
@@ -62,18 +63,18 @@ export default function DashboardMenu() {
             <div className="mt-5 flex flex-wrap gap-3">
               <div className="relative flex-1 min-w-[200px]">
                 <SearchIcon className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-ink/35" />
-                <input placeholder="Rechercher un plat..." className={`${inputCls} pl-9`} />
+                <input aria-label="Rechercher un plat" placeholder="Rechercher un plat..." className={`${inputCls} pl-9`} />
               </div>
-              <select className={`${inputCls} w-auto`}><option>Toutes catégories</option></select>
-              <select className={`${inputCls} w-auto`}><option>Tous statuts</option></select>
-              <button className="flex items-center gap-2 rounded-sm border border-ink/15 px-4 py-2.5 text-sm font-semibold text-ink">Trier</button>
+              <select aria-label="Filtrer par catégorie" className={`${inputCls} w-auto`}><option>Toutes catégories</option></select>
+              <select aria-label="Filtrer par statut" className={`${inputCls} w-auto`}><option>Tous statuts</option></select>
+              <button type="button" className="flex items-center gap-2 rounded-sm border border-ink/15 px-4 py-2.5 text-sm font-semibold text-ink">Trier</button>
             </div>
 
             <div className="mt-5 grid gap-5 lg:grid-cols-[220px_1fr_320px]">
-              <Card title="Catégories" action={<button className="text-flame"><PlusIcon className="h-4 w-4" /></button>}>
+              <Card title="Catégories" action={<button type="button" className="text-flame"><PlusIcon className="h-4 w-4" /></button>}>
                 <div className="space-y-0.5">
                   {categories.map((c) => (
-                    <button
+                    <button type="button"
                       key={c.name}
                       onClick={() => setActiveCat(c.name)}
                       className={`flex w-full items-center justify-between rounded-sm px-2.5 py-2 text-sm ${activeCat === c.name ? 'bg-flame/10 font-bold text-flame' : 'text-ink/70 hover:bg-cream'}`}
@@ -82,18 +83,18 @@ export default function DashboardMenu() {
                     </button>
                   ))}
                 </div>
-                <button className="mt-3 flex items-center gap-2 text-xs font-semibold text-ink/50"><GripIcon className="h-3.5 w-3.5" /> Réorganiser les catégories</button>
+                <button type="button" className="mt-3 flex items-center gap-2 text-xs font-semibold text-ink/50"><GripIcon className="h-3.5 w-3.5" /> Réorganiser les catégories</button>
               </Card>
 
               <Card title={`${dishes.length} plats`}>
                 <div className="divide-y divide-ink/10">
                   {dishes.map((d) => (
-                    <button
+                    <button type="button"
                       key={d.name}
                       onClick={() => setSelected(d)}
                       className={`flex w-full items-center gap-3 border-l-2 py-3 pl-2 text-left ${selected?.name === d.name ? 'border-flame bg-flame/5' : 'border-transparent'}`}
                     >
-                      <img src={d.img} alt="" className="h-12 w-12 shrink-0 rounded-md object-cover" />
+                      <img src={d.img} alt="" className="h-12 w-12 shrink-0 rounded-md object-cover"  decoding="async" loading="lazy" />
                       <div className="min-w-0 flex-1">
                         <p className="truncate text-sm font-bold text-ink">{d.name}</p>
                         <p className="truncate text-xs text-ink/45">{d.desc}</p>
@@ -104,7 +105,7 @@ export default function DashboardMenu() {
                     </button>
                   ))}
                 </div>
-                <button className="mt-3 flex w-full items-center justify-center gap-1 py-2 text-sm font-semibold text-ink/60">
+                <button type="button" className="mt-3 flex w-full items-center justify-center gap-1 py-2 text-sm font-semibold text-ink/60">
                   Voir plus de plats <ChevronDownIcon className="h-4 w-4" />
                 </button>
               </Card>
@@ -112,8 +113,8 @@ export default function DashboardMenu() {
               {selected && (
                 <Card>
                   <div className="relative">
-                    <img src={selected.img} alt="" className="aspect-square w-full rounded-md object-cover" />
-                    <button className="absolute right-2 top-2 flex h-8 w-8 items-center justify-center rounded-full bg-paper shadow"><CameraIcon className="h-4 w-4 text-ink" /></button>
+                    <img src={selected.img} alt="" className="aspect-square w-full rounded-md object-cover"  decoding="async" loading="lazy" />
+                    <button type="button" className="absolute right-2 top-2 flex h-8 w-8 items-center justify-center rounded-full bg-paper shadow"><CameraIcon className="h-4 w-4 text-ink" /></button>
                   </div>
                   <p className="mt-3 font-display text-lg text-ink">{selected.name}</p>
                   <p className="text-xs text-ink/50">{selected.desc}</p>
@@ -140,7 +141,7 @@ export default function DashboardMenu() {
                         {['🌾', '🥛', '🚫'].map((a) => (
                           <span key={a} className="flex h-9 w-9 items-center justify-center rounded-sm border border-ink/15 text-sm">{a}</span>
                         ))}
-                        <button className="flex h-9 w-9 items-center justify-center rounded-sm border border-dashed border-ink/25 text-ink/40"><PlusIcon className="h-4 w-4" /></button>
+                        <button type="button" className="flex h-9 w-9 items-center justify-center rounded-sm border border-dashed border-ink/25 text-ink/40"><PlusIcon className="h-4 w-4" /></button>
                       </div>
                     </div>
 
